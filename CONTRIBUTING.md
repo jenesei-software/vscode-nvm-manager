@@ -16,13 +16,32 @@ Requirements: Node.js 22+, npm, and nvm for manual testing — `nvm-windows` on 
 
 ```powershell
 npm install
-npm run check        # lint + typecheck + registry guard
-npm test
-
-# Develop inside VS Code
-npm run build:watch
-# then press F5 for an Extension Development Host
+npm run build         # dev bundle to dist/ (with source maps)
+npm run build:watch   # rebuild on change
+npm run build:prod    # minified production bundle
+npm run lint          # biome check (lint + format + imports)
+npm run lint:fix      # biome check, apply safe fixes
+npm run format        # biome format --write
+npm run typecheck     # tsc --noEmit
+npm run check         # lint + typecheck + registry guard
+npm test              # unit tests
+npm run vsix          # package the .vsix
 ```
+
+### Run the extension locally
+
+1. `npm install`, then `npm run build`.
+2. Open this folder in VS Code and press `F5` (Run and Debug → **Run Extension**). A second window
+   opens with the extension loaded — open the **NVM Manager** icon in the activity bar there. Use
+   `npm run build:watch` to rebuild on every change.
+3. To try it in your normal editor without the debug host:
+
+   ```powershell
+   npm run vsix
+   code --install-extension nvm-manager-0.0.1.vsix
+   ```
+
+   The version in the file name comes from `package.json`.
 
 Notes:
 

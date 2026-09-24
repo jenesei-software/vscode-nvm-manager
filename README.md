@@ -77,7 +77,6 @@ off and **Ask when off** is on, a notification offers **Switch** and **Always fo
 | `NVM: Refresh Available Versions` | Reload `nvm list available`. |
 | `NVM: Toggle Auto-switch (Global)` | Flip the global auto-switch setting. |
 | `NVM: Toggle Auto-switch (This Project)` | Flip the project override. |
-| `NVM: Open Settings` | Focus the Settings panel. |
 
 ## Support the project
 
@@ -85,48 +84,6 @@ NVM Manager is free and open source. If it is useful to you:
 
 - ⭐ **Star the repository** — it helps other people find it.
 - ☕ **[DonationAlerts](https://www.donationalerts.com/r/cyrilstrone)** — a one-time donation keeps the project alive.
-
-## Development
-
-Requirements: Node.js 22+ and npm.
-
-```powershell
-npm install
-npm run build         # dev bundle to dist/ (with source maps)
-npm run build:watch   # rebuild on change
-npm run build:prod    # minified production bundle
-npm run lint          # biome check (lint + format + imports)
-npm run lint:fix      # biome check, apply safe fixes
-npm run format        # biome format --write
-npm run typecheck     # tsc --noEmit
-npm run check         # lint + typecheck
-npm test              # unit tests for the version resolver
-npm run vsix          # package the .vsix
-```
-
-Press `F5` in VS Code to launch an Extension Development Host.
-
-### Run the extension locally
-
-1. Install dependencies and build the bundle:
-
-   ```powershell
-   npm install
-   npm run build
-   ```
-
-2. Open this folder in VS Code and press `F5` (Run and Debug → **Run Extension**).
-   A second window opens with the extension loaded — open the **NVM Manager** icon in the
-   activity bar there. Use `npm run build:watch` in a terminal to rebuild on every change.
-
-To try it in your normal editor without the debug host, package it and install the `.vsix`:
-
-```powershell
-npm run vsix
-code --install-extension nvm-manager-0.0.1.vsix
-```
-
-The version in the file name comes from `package.json`.
 
 ## License
 
