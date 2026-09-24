@@ -31,6 +31,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Check registry
+        run: npm run check:registry
+
       - name: Test
         run: npm test
 

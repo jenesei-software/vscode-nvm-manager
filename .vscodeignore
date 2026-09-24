@@ -4,6 +4,7 @@
 .gitattributes
 .npmrc
 src/**
+scripts/**
 tsconfig.json
 tsconfig.test.json
 esbuild.mjs
