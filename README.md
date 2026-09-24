@@ -1,7 +1,9 @@
 # NVM Manager
 
-[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/jenesei-software.nvm-manager?label=marketplace)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/jenesei-software.nvm-manager)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Marketplace](https://img.shields.io/badge/marketplace-NVM%20Manager-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Version](https://img.shields.io/badge/version-0.1.0-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A VS Code extension for **nvm**: see every installed Node.js version, switch the active one, and
 let a project pin its version through `.nvmrc` — all without leaving the editor.
