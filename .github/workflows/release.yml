@@ -69,7 +69,7 @@ jobs:
         run: npx @vscode/vsce publish --packagePath "nvm-manager-$VERSION.vsix"
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ env.VERSION }}
           name: NVM Manager v${{ env.VERSION }}
