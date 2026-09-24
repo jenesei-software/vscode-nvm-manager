@@ -79,7 +79,7 @@ NVM Manager is free and open source. If it is useful to you:
 
 ## Development
 
-Requirements: Node.js 20+ and npm.
+Requirements: Node.js 22+ and npm.
 
 ```powershell
 npm install

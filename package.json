@@ -14,7 +14,8 @@
   },
   "homepage": "https://github.com/jenesei-software/vscode-nvm-manager#readme",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.0",
+    "node": ">=22"
   },
   "categories": [
     "Other"
@@ -228,7 +229,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.20.4",
     "@types/vscode": "^1.85.0",
     "@vscode/vsce": "^3.2.1",
     "esbuild": "^0.24.0",

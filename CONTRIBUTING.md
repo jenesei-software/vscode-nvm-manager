@@ -11,7 +11,7 @@ matters.
 
 ## Development setup
 
-Requirements: Windows, Node.js 20+, npm, and nvm-windows for manual testing.
+Requirements: Windows, Node.js 22+, npm, and nvm-windows for manual testing.
 
 ```powershell
 npm install
