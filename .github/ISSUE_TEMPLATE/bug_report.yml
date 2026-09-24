@@ -1,0 +1,54 @@
+name: Bug report
+description: Something in NVM Manager works wrong — a version is missing, switching fails, auto-switch misfires.
+labels: ["bug"]
+body:
+  - type: input
+    id: extension-version
+    attributes:
+      label: NVM Manager version
+      placeholder: 'e.g. 0.0.1'
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code version
+      placeholder: 'e.g. 1.94.2'
+    validations:
+      required: true
+
+  - type: input
+    id: nvm-version
+    attributes:
+      label: nvm-windows version
+      description: 'Output of `nvm version`.'
+      placeholder: 'e.g. 1.2.2'
+    validations:
+      required: true
+
+  - type: textarea
+    id: nvm-list
+    attributes:
+      label: Installed versions
+      description: 'Output of `nvm list`.'
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happens
+    attributes:
+      label: What happens?
+      description: What did you do, what did you see, and what did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output panel log
+      description: 'Output panel → NVM Manager (View → Output, then pick NVM Manager).'
+      render: text
+    validations:
+      required: false

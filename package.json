@@ -1,0 +1,237 @@
+{
+  "name": "nvm-manager",
+  "displayName": "NVM Manager",
+  "description": "Manage nvm-windows Node.js versions from VS Code: view installed versions, switch the active one, and auto-switch per project via .nvmrc.",
+  "version": "0.0.1",
+  "publisher": "jenesei-software",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jenesei-software/vscode-nvm-manager"
+  },
+  "bugs": {
+    "url": "https://github.com/jenesei-software/vscode-nvm-manager/issues"
+  },
+  "homepage": "https://github.com/jenesei-software/vscode-nvm-manager#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "nvm",
+    "nvm-windows",
+    "node",
+    "nodejs",
+    "version manager"
+  ],
+  "icon": "resources/icon.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "workspaceContains:.nvmrc"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "nvmManager",
+          "title": "NVM Manager",
+          "icon": "resources/nvm.svg"
+        }
+      ]
+    },
+    "views": {
+      "nvmManager": [
+        {
+          "id": "nvmManager.versions",
+          "name": "Versions",
+          "icon": "resources/nvm.svg"
+        },
+        {
+          "id": "nvmManager.settings",
+          "name": "Settings",
+          "type": "webview",
+          "icon": "resources/nvm.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "nvmManager.refresh",
+        "title": "Refresh",
+        "category": "NVM",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "nvmManager.switch",
+        "title": "Switch Node.js Version...",
+        "category": "NVM",
+        "icon": "$(versions)"
+      },
+      {
+        "command": "nvmManager.use",
+        "title": "Use This Version",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.install",
+        "title": "Install Version",
+        "category": "NVM",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "nvmManager.uninstall",
+        "title": "Uninstall Version",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.copyVersion",
+        "title": "Copy Version",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.refreshRemote",
+        "title": "Refresh Available Versions",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.toggleAutoSwitchGlobal",
+        "title": "Toggle Auto-switch (Global)",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.toggleAutoSwitchWorkspace",
+        "title": "Toggle Auto-switch (This Project)",
+        "category": "NVM"
+      },
+      {
+        "command": "nvmManager.openSettings",
+        "title": "Open Settings",
+        "category": "NVM",
+        "icon": "$(gear)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "nvmManager.switch",
+          "when": "view == nvmManager.versions",
+          "group": "navigation@1"
+        },
+        {
+          "command": "nvmManager.refresh",
+          "when": "view == nvmManager.versions",
+          "group": "navigation@2"
+        },
+        {
+          "command": "nvmManager.openSettings",
+          "when": "view == nvmManager.versions",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "nvmManager.use",
+          "when": "view == nvmManager.versions && viewItem == installed",
+          "group": "inline@1"
+        },
+        {
+          "command": "nvmManager.copyVersion",
+          "when": "view == nvmManager.versions && viewItem == installed",
+          "group": "inline@2"
+        },
+        {
+          "command": "nvmManager.uninstall",
+          "when": "view == nvmManager.versions && viewItem == installed",
+          "group": "1_manage@1"
+        },
+        {
+          "command": "nvmManager.copyVersion",
+          "when": "view == nvmManager.versions && viewItem == active",
+          "group": "inline@1"
+        },
+        {
+          "command": "nvmManager.uninstall",
+          "when": "view == nvmManager.versions && viewItem == active",
+          "group": "1_manage@1"
+        },
+        {
+          "command": "nvmManager.install",
+          "when": "view == nvmManager.versions && viewItem == remote",
+          "group": "inline@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "nvmManager.use",
+          "when": "false"
+        },
+        {
+          "command": "nvmManager.install",
+          "when": "false"
+        },
+        {
+          "command": "nvmManager.uninstall",
+          "when": "false"
+        },
+        {
+          "command": "nvmManager.copyVersion",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "NVM Manager",
+      "properties": {
+        "nvmManager.nvmPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "markdownDescription": "Absolute path to `nvm.exe`. Leave empty to auto-detect from `NVM_HOME` or `PATH`."
+        },
+        "nvmManager.autoSwitch": {
+          "type": "boolean",
+          "default": false,
+          "scope": "resource",
+          "markdownDescription": "Auto-switch the active Node.js version from `.nvmrc` / `.node-version` / `package.json` `engines.node` when a workspace is opened. Set globally or per workspace."
+        },
+        "nvmManager.askWhenAutoSwitchOff": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "markdownDescription": "Ask before switching when auto-switch is disabled."
+        },
+        "nvmManager.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Show the active Node.js version in the status bar."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build:prod",
+    "build": "node esbuild.mjs",
+    "build:watch": "node esbuild.mjs --watch",
+    "build:prod": "node esbuild.mjs --production",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck",
+    "test": "tsc -p tsconfig.test.json && node --test \"out/test/*.test.js\"",
+    "vsix": "vsce package",
+    "vsix:publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.14",
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.5.4"
+  }
+}
