@@ -4,6 +4,7 @@ export const CONFIG_SECTION = "nvmManager";
 
 export const KEYS = {
   nvmPath: "nvmPath",
+  nvmDir: "nvmDir",
   autoSwitch: "autoSwitch",
   askWhenAutoSwitchOff: "askWhenAutoSwitchOff",
   statusBarEnabled: "statusBar.enabled",
@@ -83,4 +84,8 @@ export function statusBarEnabled(): boolean {
 
 export function nvmPathSetting(): string {
   return getConfig().get<string>(KEYS.nvmPath, "");
+}
+
+export function nvmDirSetting(): string {
+  return getConfig().get<string>(KEYS.nvmDir, "");
 }

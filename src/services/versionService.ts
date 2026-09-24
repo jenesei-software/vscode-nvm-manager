@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import type { InstalledVersion, NvmAdapter, RemoteVersion } from "../nvm/types";
 import { resolveRequested } from "../util/version";
+import type { TerminalEnv } from "./terminalEnv";
 
 export class VersionService {
   private installed: InstalledVersion[] = [];
@@ -11,7 +12,10 @@ export class VersionService {
   private readonly changeEmitter = new vscode.EventEmitter<void>();
   readonly onDidChange = this.changeEmitter.event;
 
-  constructor(private readonly adapter: NvmAdapter) {}
+  constructor(
+    private readonly adapter: NvmAdapter,
+    private readonly terminalEnv?: TerminalEnv,
+  ) {}
 
   getInstalled(): InstalledVersion[] {
     return this.installed;
@@ -37,8 +41,15 @@ export class VersionService {
   }
 
   async refresh(): Promise<void> {
-    this.installed = await this.adapter.listInstalled();
-    this.currentVersion = await this.adapter.current();
+    const installed = await this.adapter.listInstalled();
+    const current = this.adapter.managesTerminalEnv
+      ? (this.terminalEnv?.getSelected() ?? (await this.adapter.current()))
+      : await this.adapter.current();
+    this.currentVersion = current;
+    this.installed = installed.map((item) => ({
+      version: item.version,
+      active: item.version === current,
+    }));
     this.changeEmitter.fire();
   }
 
@@ -58,6 +69,9 @@ export class VersionService {
 
   async use(version: string): Promise<void> {
     await this.adapter.use(version);
+    if (this.adapter.managesTerminalEnv) {
+      this.terminalEnv?.select(version, this.adapter.dir);
+    }
     await this.refresh();
   }
 

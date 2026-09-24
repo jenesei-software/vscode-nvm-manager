@@ -11,11 +11,12 @@ matters.
 
 ## Development setup
 
-Requirements: Windows, Node.js 22+, npm, and nvm-windows for manual testing.
+Requirements: Node.js 22+, npm, and nvm for manual testing — `nvm-windows` on Windows,
+`nvm-sh` on macOS/Linux.
 
 ```powershell
 npm install
-npm run check        # lint + typecheck
+npm run check        # lint + typecheck + registry guard
 npm test
 
 # Develop inside VS Code
@@ -27,20 +28,21 @@ Notes:
 
 - Formatting and linting go through [Biome](https://biomejs.dev) (`npm run format`, `npm run lint`).
   Install the recommended `biomejs.biome` extension — VS Code is configured to format on save.
-- The extension shells out to `nvm.exe`; on Windows `nvm use` may require administrator rights to
-  recreate the `NVM_SYMLINK` symlink.
-- `npm test` covers the version resolver in `src/util/version.ts` — the part that turns `.nvmrc`
-  values such as `22`, `v22.16.0`, `22.16` or `lts/*` into an installed version.
+- The extension shells out to nvm (`nvm.exe` on Windows, `nvm` via bash on macOS/Linux);
+  on Windows `nvm use` may require administrator rights to recreate the `NVM_SYMLINK` symlink.
+- On macOS/Linux `nvm use` only affects its own shell, so the selection is applied to the
+  integrated terminal environment (`src/services/terminalEnv.ts`).
+- `npm test` covers the version resolver and the nvm output parsers.
 
 ## Project layout
 
 | Path | Purpose |
 | --- | --- |
 | `src/extension.ts` | Activation and wiring |
-| `src/nvm/` | nvm adapter: detection and the `nvm-windows` implementation |
-| `src/services/` | Version cache and the auto-switch logic |
+| `src/nvm/` | nvm adapters: detection, `nvm-windows` and `nvm-sh` implementations |
+| `src/services/` | Version cache, auto-switch and terminal environment |
 | `src/views/` | The Versions tree and the Settings webview panel |
-| `src/util/` | Process execution and version resolution helpers |
+| `src/util/` | Process execution, version resolution and output parsing |
 | `src/test/` | Unit tests |
 
 ## Code guidelines

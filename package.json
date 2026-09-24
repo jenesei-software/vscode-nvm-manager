@@ -190,7 +190,13 @@
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "markdownDescription": "Absolute path to `nvm.exe`. Leave empty to auto-detect from `NVM_HOME` or `PATH`."
+          "markdownDescription": "Windows only. Absolute path to `nvm.exe`. Leave empty to auto-detect from `NVM_HOME` or `PATH`."
+        },
+        "nvmManager.nvmDir": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "markdownDescription": "macOS / Linux only. Path to the nvm directory (`NVM_DIR`). Leave empty to auto-detect from `NVM_DIR` or `~/.nvm`."
         },
         "nvmManager.autoSwitch": {
           "type": "boolean",

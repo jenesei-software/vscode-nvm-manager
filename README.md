@@ -1,14 +1,16 @@
 # NVM Manager
 
-A VS Code extension for **nvm-windows**: see every installed Node.js version, switch the
-active one, and let a project pin its version through `.nvmrc` — all without leaving the editor.
+A VS Code extension for **nvm-windows** and **nvm (nvm-sh)**: see every installed Node.js
+version, switch the active one, and let a project pin its version through `.nvmrc` — all without
+leaving the editor.
 
-> Windows-first. The nvm adapter is abstracted, but only `nvm-windows` is implemented today.
+> On Windows the switch repoints the global nvm symlink. On macOS/Linux `nvm use` only affects
+> its own shell, so the selected version is applied to the **integrated terminals** instead.
 
 ## Features
 
 - **Versions view** in the activity bar: installed versions with the active one marked, plus an
-  **Available** list (`nvm list available`) you can install from.
+  **Available** list (`nvm list available` / `nvm ls-remote`) you can install from.
 - **Switch in one click** from the tree, the status bar, or the command palette
   (`NVM: Switch Node.js Version...`).
 - **Active version in the status bar** — click it to switch.
@@ -24,10 +26,10 @@ active one, and let a project pin its version through `.nvmrc` — all without l
 
 ## Requirements
 
-- Windows.
-- [nvm-windows](https://github.com/coreybutler/nvm-windows) installed and `nvm` available.
-- The extension auto-detects `nvm.exe` from `NVM_HOME`, then `PATH`, or use
-  `nvmManager.nvmPath` to point at it explicitly.
+- **Windows**: [nvm-windows](https://github.com/coreybutler/nvm-windows) installed and `nvm`
+  available. Auto-detects `nvm.exe` from `NVM_HOME`, then `PATH`, or set `nvmManager.nvmPath`.
+- **macOS / Linux**: [nvm-sh](https://github.com/nvm-sh/nvm) installed. Auto-detects `NVM_DIR`
+  or `~/.nvm`, or set `nvmManager.nvmDir`. Switching applies to VS Code's integrated terminals.
 
 ## Installation
 
@@ -38,7 +40,8 @@ active one, and let a project pin its version through `.nvmrc` — all without l
 
 1. Open the **NVM Manager** icon in the activity bar.
 2. The **Versions** view lists what is installed; the active version has a green check.
-3. Click a version (or the status bar item) to switch.
+3. Click a version (or the status bar item) to switch. On macOS/Linux, open a **new** integrated
+   terminal to pick up the change.
 4. Open **Settings** in the same container to configure auto-switch.
 
 To pin a project version, add `.nvmrc` at the repository root:
@@ -54,7 +57,8 @@ To pin a project version, add `.nvmrc` at the repository root:
 | `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
 | `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
 | `nvmManager.statusBar.enabled` | `true` | window | Show the active version in the status bar. |
-| `nvmManager.nvmPath` | `""` | machine-overridable | Absolute path to `nvm.exe`. Empty means auto-detect. |
+| `nvmManager.nvmPath` | `""` | machine-overridable | Windows only. Absolute path to `nvm.exe`. Empty means auto-detect. |
+| `nvmManager.nvmDir` | `""` | machine-overridable | macOS / Linux only. Path to `NVM_DIR`. Empty means auto-detect. |
 
 When auto-switch is on, opening a workspace silently switches to the pinned version. When it is
 off and **Ask when off** is on, a notification offers **Switch** and **Always for this project**.

@@ -1,3 +1,4 @@
+import * as path from "node:path";
 import { run } from "../util/exec";
 import { compareVersions } from "../util/version";
 import type { InstalledVersion, NvmAdapter, RemoteVersion } from "./types";
@@ -13,7 +14,12 @@ const REMOTE_LABELS: Record<number, string | false> = {
 };
 
 export class NvmWindowsAdapter implements NvmAdapter {
-  constructor(private readonly nvmPath: string) {}
+  readonly managesTerminalEnv = false;
+  readonly dir: string;
+
+  constructor(private readonly nvmPath: string) {
+    this.dir = path.dirname(nvmPath);
+  }
 
   private exec(args: string[], timeout = 60000) {
     return run(this.nvmPath, args, timeout);

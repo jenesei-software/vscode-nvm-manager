@@ -3,6 +3,7 @@ import { registerCommands } from "./commands";
 import {
   askWhenAutoSwitchOff,
   hasWorkspace,
+  nvmDirSetting,
   nvmPathSetting,
   readAutoSwitch,
   setAskWhenAutoSwitchOff,
@@ -13,6 +14,7 @@ import {
 } from "./config";
 import { createAdapter } from "./nvm";
 import { AutoSwitch } from "./services/autoSwitch";
+import { TerminalEnv } from "./services/terminalEnv";
 import { VersionService } from "./services/versionService";
 import { StatusBar } from "./statusBar";
 import {
@@ -27,10 +29,16 @@ export async function activate(
   const output = vscode.window.createOutputChannel("NVM Manager");
   context.subscriptions.push(output);
 
+  const terminalEnv = new TerminalEnv(
+    context.workspaceState,
+    context.environmentVariableCollection,
+  );
+  await terminalEnv.restore();
+
   let service: VersionService;
   try {
-    const adapter = await createAdapter(nvmPathSetting());
-    service = new VersionService(adapter);
+    const adapter = await createAdapter(nvmPathSetting(), nvmDirSetting());
+    service = new VersionService(adapter, terminalEnv);
   } catch (error) {
     const message = (error as Error).message;
     output.appendLine(message);

@@ -1,4 +1,5 @@
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { run } from "../util/exec";
 
@@ -42,5 +43,27 @@ export async function detectNvmPath(configured?: string): Promise<string> {
 
   throw new Error(
     'nvm.exe not found. Install nvm-windows or set "nvmManager.nvmPath".',
+  );
+}
+
+export async function detectNvmDir(configured?: string): Promise<string> {
+  const candidates: string[] = [];
+  const configuredDir = configured ? normalizeNvmPath(configured) : "";
+  if (configuredDir) {
+    candidates.push(configuredDir);
+  }
+  if (process.env.NVM_DIR) {
+    candidates.push(process.env.NVM_DIR);
+  }
+  candidates.push(path.join(os.homedir(), ".nvm"));
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, "nvm.sh"))) {
+      return candidate;
+    }
+  }
+
+  throw new Error(
+    'nvm not found. Install nvm (nvm-sh) or set "nvmManager.nvmDir".',
   );
 }

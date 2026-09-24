@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- macOS and Linux support via `nvm-sh`: installed versions are read from `nvm ls` / `nvm ls-remote`
+  and the selected version is applied to the integrated terminals.
+
 ### Changed
 
 - Rebalanced the logo wordmark to uppercase `NVM` for a more even look.
