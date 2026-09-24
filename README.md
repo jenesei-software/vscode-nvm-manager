@@ -1,11 +1,13 @@
 # NVM Manager
 
-A VS Code extension for **nvm-windows** and **nvm (nvm-sh)**: see every installed Node.js
-version, switch the active one, and let a project pin its version through `.nvmrc` — all without
-leaving the editor.
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/jenesei-software.nvm-manager?label=marketplace)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/jenesei-software.nvm-manager)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
 
-> On Windows the switch repoints the global nvm symlink. On macOS/Linux `nvm use` only affects
-> its own shell, so the selected version is applied to the **integrated terminals** instead.
+A VS Code extension for **nvm**: see every installed Node.js version, switch the active one, and
+let a project pin its version through `.nvmrc` — all without leaving the editor.
+
+Works with **nvm-windows** on Windows and **nvm-sh** on macOS/Linux: switching repoints the global
+nvm symlink on Windows and updates the integrated terminal environment on macOS/Linux.
 
 <img src="docs/screenshot.png" alt="NVM Manager" width="400">
 
@@ -35,7 +37,8 @@ leaving the editor.
 
 ## Installation
 
-- From the Marketplace: search for **NVM Manager** (publisher **Jenesei Software**).
+- From the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager),
+  or from the Command Palette (`Ctrl+P` / `Cmd+P`): `ext install jenesei-software.nvm-manager`.
 - Or install a local build: **Extensions** view → `...` → **Install from VSIX...**.
 
 ## Getting started
