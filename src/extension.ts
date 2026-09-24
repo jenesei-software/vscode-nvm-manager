@@ -100,6 +100,11 @@ export async function activate(
   registerCommands(context, { service });
 
   context.subscriptions.push(
+    vscode.window.onDidChangeWindowState((state) => {
+      if (state.focused) {
+        statusBar.update(statusBarEnabled(), service.getCurrent());
+      }
+    }),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (!event.affectsConfiguration("nvmManager")) {
         return;

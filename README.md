@@ -7,9 +7,7 @@ leaving the editor.
 > On Windows the switch repoints the global nvm symlink. On macOS/Linux `nvm use` only affects
 > its own shell, so the selected version is applied to the **integrated terminals** instead.
 
-<p align="center">
-  <img src="docs/screenshot.png" alt="NVM Manager" width="480">
-</p>
+<img src="docs/screenshot.png" alt="NVM Manager" width="400">
 
 ## Features
 
