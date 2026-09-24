@@ -2,7 +2,7 @@
   "name": "nvm-manager",
   "displayName": "NVM Manager",
   "description": "Manage nvm-windows Node.js versions from VS Code: view installed versions, switch the active one, and auto-switch per project via .nvmrc.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "publisher": "jenesei-software",
   "license": "MIT",
   "repository": {
