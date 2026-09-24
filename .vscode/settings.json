@@ -12,5 +12,6 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
-  }
+  },
+  "nvmManager.autoSwitch": true
 }

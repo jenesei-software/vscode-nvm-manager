@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Rebalanced the logo wordmark to uppercase `NVM` for a more even look.
+- The toolbar gear now toggles the Settings panel instead of only revealing it.
 
 ## [0.0.1] - 2026-09-24
 

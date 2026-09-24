@@ -50,6 +50,22 @@ export function registerCommands(
 ): void {
   const { service } = dependencies;
 
+  const settingsVisibleKey = "nvmManager.settingsVisible";
+  let settingsVisible = context.globalState.get<boolean>(
+    settingsVisibleKey,
+    true,
+  );
+  const applySettingsVisible = async (visible: boolean): Promise<void> => {
+    settingsVisible = visible;
+    await vscode.commands.executeCommand(
+      "setContext",
+      settingsVisibleKey,
+      visible,
+    );
+    await context.globalState.update(settingsVisibleKey, visible);
+  };
+  void applySettingsVisible(settingsVisible);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("nvmManager.refresh", async () => {
       try {
@@ -191,8 +207,11 @@ export function registerCommands(
       },
     ),
 
-    vscode.commands.registerCommand("nvmManager.openSettings", async () => {
-      await vscode.commands.executeCommand("nvmManager.settings.focus");
+    vscode.commands.registerCommand("nvmManager.toggleSettings", async () => {
+      await applySettingsVisible(!settingsVisible);
+      if (settingsVisible) {
+        await vscode.commands.executeCommand("nvmManager.settings.focus");
+      }
     }),
   );
 }

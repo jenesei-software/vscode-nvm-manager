@@ -54,7 +54,8 @@
           "id": "nvmManager.settings",
           "name": "Settings",
           "type": "webview",
-          "icon": "resources/nvm.svg"
+          "icon": "resources/nvm.svg",
+          "when": "nvmManager.settingsVisible"
         }
       ]
     },
@@ -108,8 +109,8 @@
         "category": "NVM"
       },
       {
-        "command": "nvmManager.openSettings",
-        "title": "Open Settings",
+        "command": "nvmManager.toggleSettings",
+        "title": "Show/Hide Settings",
         "category": "NVM",
         "icon": "$(gear)"
       }
@@ -127,7 +128,7 @@
           "group": "navigation@2"
         },
         {
-          "command": "nvmManager.openSettings",
+          "command": "nvmManager.toggleSettings",
           "when": "view == nvmManager.versions",
           "group": "navigation@3"
         }

@@ -5,6 +5,7 @@
 .npmrc
 src/**
 scripts/**
+docs/**
 tsconfig.json
 tsconfig.test.json
 esbuild.mjs
