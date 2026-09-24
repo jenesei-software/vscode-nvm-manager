@@ -11,7 +11,7 @@ let a project pin its version through `.nvmrc` — all without leaving the edito
 Works with **nvm-windows** on Windows and **nvm-sh** on macOS/Linux: switching repoints the global
 nvm symlink on Windows and updates the integrated terminal environment on macOS/Linux.
 
-<img src="docs/screenshot.png" alt="NVM Manager" width="400">
+<p><img src="docs/screenshot.png" alt="NVM Manager" width="400"></p>
 
 ## Features
 
