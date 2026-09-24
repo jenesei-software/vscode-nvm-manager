@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - macOS and Linux support via `nvm-sh`: installed versions are read from `nvm ls` / `nvm ls-remote`
   and the selected version is applied to the integrated terminals.
+- Project view: the declared Node.js version and its source (`.nvmrc`, `.node-version`,
+  `engines.node`), the resolved and active versions with a match indicator, and package manager
+  detection (declared, detected, in use, availability) with a switch-to-declared action.
 
 ### Changed
 

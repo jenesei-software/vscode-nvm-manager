@@ -6,45 +6,47 @@ import {
   readAutoSwitch,
   setAutoSwitchWorkspace,
 } from "../config";
-import { parseEnginesNode, parseNvmrc } from "../util/version";
+import {
+  collectNodeDeclarations,
+  type NodeDeclaration,
+} from "../util/projectSignals";
 import type { VersionService } from "./versionService";
 
-function readFirstLine(file: string): string | undefined {
+function readFile(file: string): string | undefined {
   try {
-    if (!fs.existsSync(file)) {
-      return undefined;
-    }
-    return parseNvmrc(fs.readFileSync(file, "utf8"));
+    return fs.existsSync(file) ? fs.readFileSync(file, "utf8") : undefined;
   } catch {
     return undefined;
   }
 }
 
-function readEnginesNode(root: string): string | undefined {
+function readJson(file: string): unknown {
+  const text = readFile(file);
+  if (text === undefined) {
+    return undefined;
+  }
   try {
-    const file = path.join(root, "package.json");
-    if (!fs.existsSync(file)) {
-      return undefined;
-    }
-    const parsed = JSON.parse(fs.readFileSync(file, "utf8")) as {
-      engines?: { node?: unknown };
-    };
-    const node = parsed.engines?.node;
-    return typeof node === "string" ? parseEnginesNode(node) : undefined;
+    return JSON.parse(text);
   } catch {
     return undefined;
   }
+}
+
+export function readDeclaredNode(
+  folder: vscode.WorkspaceFolder,
+): NodeDeclaration | undefined {
+  const root = folder.uri.fsPath;
+  return collectNodeDeclarations({
+    nvmrc: readFile(path.join(root, ".nvmrc")),
+    nodeVersion: readFile(path.join(root, ".node-version")),
+    packageJson: readJson(path.join(root, "package.json")),
+  })[0];
 }
 
 export function readDesiredVersion(
   folder: vscode.WorkspaceFolder,
 ): string | undefined {
-  const root = folder.uri.fsPath;
-  return (
-    readFirstLine(path.join(root, ".nvmrc")) ??
-    readFirstLine(path.join(root, ".node-version")) ??
-    readEnginesNode(root)
-  );
+  return readDeclaredNode(folder)?.raw;
 }
 
 export class AutoSwitch {
@@ -58,15 +60,15 @@ export class AutoSwitch {
     }
     this.running = true;
     try {
-      const desired = readDesiredVersion(folder);
-      if (!desired) {
+      const declared = readDeclaredNode(folder);
+      if (!declared) {
         return;
       }
 
-      const target = this.service.resolve(desired);
+      const target = this.service.resolve(declared.raw);
       if (!target) {
         vscode.window.showWarningMessage(
-          `NVM Manager: no installed Node.js version matches "${desired}".`,
+          `NVM Manager: no installed Node.js version matches "${declared.raw}".`,
         );
         return;
       }

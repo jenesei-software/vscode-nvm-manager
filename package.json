@@ -46,6 +46,11 @@
     "views": {
       "nvmManager": [
         {
+          "id": "nvmManager.project",
+          "name": "Project",
+          "icon": "resources/nvm.svg"
+        },
+        {
           "id": "nvmManager.versions",
           "name": "Versions",
           "icon": "resources/nvm.svg"
@@ -103,6 +108,23 @@
         "category": "NVM"
       },
       {
+        "command": "nvmManager.switchToDeclared",
+        "title": "Switch to Project Version",
+        "category": "NVM",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "nvmManager.installDeclared",
+        "title": "Install Project Version",
+        "category": "NVM",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "nvmManager.checkPackages",
+        "title": "Check Package Manager Availability",
+        "category": "NVM"
+      },
+      {
         "command": "nvmManager.toggleAutoSwitchWorkspace",
         "title": "Toggle Auto-switch (This Project)",
         "category": "NVM"
@@ -117,11 +139,21 @@
         },
         {
           "command": "nvmManager.refresh",
-          "when": "view == nvmManager.versions",
+          "when": "view == nvmManager.versions || view == nvmManager.project",
           "group": "navigation@2"
         }
       ],
       "view/item/context": [
+        {
+          "command": "nvmManager.switchToDeclared",
+          "when": "view == nvmManager.project && viewItem == projectActiveDiffers",
+          "group": "inline@1"
+        },
+        {
+          "command": "nvmManager.installDeclared",
+          "when": "view == nvmManager.project && viewItem == projectNoMatch",
+          "group": "inline@1"
+        },
         {
           "command": "nvmManager.use",
           "when": "view == nvmManager.versions && viewItem == installed",

@@ -5,10 +5,12 @@ import {
   setAutoSwitchGlobal,
   setAutoSwitchWorkspace,
 } from "./config";
+import type { ProjectInfoService } from "./services/projectInfo";
 import type { VersionService } from "./services/versionService";
 
 interface CommandDependencies {
   service: VersionService;
+  projectInfo: ProjectInfoService;
 }
 
 function extractVersion(argument: unknown): string | undefined {
@@ -44,11 +46,32 @@ async function runUse(service: VersionService, version: string): Promise<void> {
   }
 }
 
+async function runInstall(
+  service: VersionService,
+  version: string,
+): Promise<void> {
+  try {
+    await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: `NVM Manager: installing v${version}...`,
+      },
+      () => service.install(version),
+    );
+    vscode.window.setStatusBarMessage(
+      `NVM Manager: installed v${version}`,
+      4000,
+    );
+  } catch (error) {
+    vscode.window.showErrorMessage(`NVM Manager: ${(error as Error).message}`);
+  }
+}
+
 export function registerCommands(
   context: vscode.ExtensionContext,
   dependencies: CommandDependencies,
 ): void {
-  const { service } = dependencies;
+  const { service, projectInfo } = dependencies;
 
   context.subscriptions.push(
     vscode.commands.registerCommand("nvmManager.refresh", async () => {
@@ -100,25 +123,8 @@ export function registerCommands(
 
     vscode.commands.registerCommand("nvmManager.install", async (argument) => {
       const version = extractVersion(argument);
-      if (!version) {
-        return;
-      }
-      try {
-        await vscode.window.withProgress(
-          {
-            location: vscode.ProgressLocation.Notification,
-            title: `NVM Manager: installing v${version}...`,
-          },
-          () => service.install(version),
-        );
-        vscode.window.setStatusBarMessage(
-          `NVM Manager: installed v${version}`,
-          4000,
-        );
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `NVM Manager: ${(error as Error).message}`,
-        );
+      if (version) {
+        await runInstall(service, version);
       }
     }),
 
@@ -190,5 +196,24 @@ export function registerCommands(
         );
       },
     ),
+
+    vscode.commands.registerCommand("nvmManager.switchToDeclared", async () => {
+      const resolved = projectInfo.getInfo().node.resolved;
+      if (resolved) {
+        await runUse(service, resolved);
+      }
+    }),
+
+    vscode.commands.registerCommand("nvmManager.installDeclared", async () => {
+      const node = projectInfo.getInfo().node;
+      if (!node.declared || node.declaredSource === "engines") {
+        return;
+      }
+      await runInstall(service, node.declared);
+    }),
+
+    vscode.commands.registerCommand("nvmManager.checkPackages", async () => {
+      await projectInfo.ensureAvailability();
+    }),
   );
 }

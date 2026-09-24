@@ -15,6 +15,10 @@ nvm symlink on Windows and updates the integrated terminal environment on macOS/
 
 ## Features
 
+- **Project view**: the Node.js version a project declares and where it comes from (`.nvmrc`,
+  `.node-version`, `package.json` `engines.node`), whether it matches the active version, and the
+  package manager — declared (`packageManager` / `devEngines`), detected from lockfiles, actually
+  in use, and whether it is available on `PATH`.
 - **Versions view** in the activity bar: installed versions with the active one marked, plus an
   **Available** list (`nvm list available` / `nvm ls-remote`) you can install from.
 - **Switch in one click** from the tree, the status bar, or the command palette

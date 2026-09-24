@@ -12,9 +12,11 @@ import {
 } from "./config";
 import { createAdapter } from "./nvm";
 import { AutoSwitch } from "./services/autoSwitch";
+import { ProjectInfoService } from "./services/projectInfo";
 import { TerminalEnv } from "./services/terminalEnv";
 import { VersionService } from "./services/versionService";
 import { StatusBar } from "./statusBar";
+import { ProjectTreeProvider } from "./views/projectTreeProvider";
 import {
   type SettingsState,
   SettingsViewProvider,
@@ -51,6 +53,12 @@ export async function activate(
   const treeProvider = new VersionsTreeProvider(service);
   context.subscriptions.push(treeProvider);
 
+  const projectInfo = new ProjectInfoService(service);
+  context.subscriptions.push(projectInfo);
+
+  const projectProvider = new ProjectTreeProvider(projectInfo);
+  context.subscriptions.push(projectProvider);
+
   const settingsProvider = new SettingsViewProvider({
     getState(): SettingsState {
       const auto = readAutoSwitch();
@@ -76,6 +84,10 @@ export async function activate(
       settingsProvider,
     ),
     vscode.window.registerTreeDataProvider("nvmManager.versions", treeProvider),
+    vscode.window.registerTreeDataProvider(
+      "nvmManager.project",
+      projectProvider,
+    ),
   );
 
   const autoSwitch = new AutoSwitch(service);
@@ -83,6 +95,7 @@ export async function activate(
   const updateUi = (): void => {
     statusBar.update(service.getCurrent());
     settingsProvider.refresh();
+    projectInfo.refresh();
   };
   service.onDidChange(updateUi);
 
@@ -93,7 +106,7 @@ export async function activate(
     }
   };
 
-  registerCommands(context, { service });
+  registerCommands(context, { service, projectInfo });
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((event) => {
@@ -110,7 +123,20 @@ export async function activate(
       void runAutoSwitch();
     }),
     vscode.workspace.onDidSaveTextDocument((document) => {
-      const name = document.uri.path.split("/").pop();
+      const name = document.uri.path.split("/").pop() ?? "";
+      const projectFiles = [
+        ".nvmrc",
+        ".node-version",
+        "package.json",
+        "package-lock.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+        "bun.lockb",
+        "bun.lock",
+      ];
+      if (projectFiles.includes(name)) {
+        projectInfo.refresh();
+      }
       if (
         name === ".nvmrc" ||
         name === ".node-version" ||
