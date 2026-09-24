@@ -2,6 +2,7 @@
 .github/**
 .gitignore
 .gitattributes
+.npmrc
 src/**
 tsconfig.json
 tsconfig.test.json
