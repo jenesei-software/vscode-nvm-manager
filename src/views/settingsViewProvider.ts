@@ -7,7 +7,6 @@ export interface SettingsState {
   autoSwitchGlobal: boolean;
   autoSwitchWorkspace?: boolean;
   askWhenOff: boolean;
-  statusBar: boolean;
 }
 
 export interface SettingsController {
@@ -15,7 +14,6 @@ export interface SettingsController {
   setAutoSwitchGlobal(value: boolean): Promise<void>;
   setAutoSwitchWorkspace(value: boolean | undefined): Promise<void>;
   setAskWhenOff(value: boolean): Promise<void>;
-  setStatusBar(value: boolean): Promise<void>;
   switchVersion(): Promise<void>;
 }
 
@@ -81,9 +79,6 @@ export class SettingsViewProvider implements vscode.WebviewViewProvider {
         break;
       case "askWhenOff":
         await this.controller.setAskWhenOff(value);
-        break;
-      case "statusBar":
-        await this.controller.setStatusBar(value);
         break;
       default:
         break;

@@ -12,11 +12,7 @@ export class StatusBar {
     this.item.command = "nvmManager.switch";
   }
 
-  update(enabled: boolean, version?: string): void {
-    if (!enabled) {
-      this.item.hide();
-      return;
-    }
+  update(version?: string): void {
     this.item.text = version ? `⬢ v${version}` : "⬢ nvm";
     this.item.tooltip = version
       ? `NVM Manager: active Node.js v${version}. Click to switch.`

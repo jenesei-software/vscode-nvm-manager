@@ -54,8 +54,7 @@
           "id": "nvmManager.settings",
           "name": "Settings",
           "type": "webview",
-          "icon": "resources/nvm.svg",
-          "when": "nvmManager.settingsVisible"
+          "icon": "resources/nvm.svg"
         }
       ]
     },
@@ -107,12 +106,6 @@
         "command": "nvmManager.toggleAutoSwitchWorkspace",
         "title": "Toggle Auto-switch (This Project)",
         "category": "NVM"
-      },
-      {
-        "command": "nvmManager.toggleSettings",
-        "title": "Show/Hide Settings",
-        "category": "NVM",
-        "icon": "$(gear)"
       }
     ],
     "menus": {
@@ -126,11 +119,6 @@
           "command": "nvmManager.refresh",
           "when": "view == nvmManager.versions",
           "group": "navigation@2"
-        },
-        {
-          "command": "nvmManager.toggleSettings",
-          "when": "view == nvmManager.versions",
-          "group": "navigation@3"
         }
       ],
       "view/item/context": [
@@ -210,12 +198,6 @@
           "default": true,
           "scope": "window",
           "markdownDescription": "Ask before switching when auto-switch is disabled."
-        },
-        "nvmManager.statusBar.enabled": {
-          "type": "boolean",
-          "default": true,
-          "scope": "window",
-          "description": "Show the active Node.js version in the status bar."
         }
       }
     }

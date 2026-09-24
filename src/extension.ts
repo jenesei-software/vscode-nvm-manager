@@ -9,8 +9,6 @@ import {
   setAskWhenAutoSwitchOff,
   setAutoSwitchGlobal,
   setAutoSwitchWorkspace,
-  setStatusBarEnabled,
-  statusBarEnabled,
 } from "./config";
 import { createAdapter } from "./nvm";
 import { AutoSwitch } from "./services/autoSwitch";
@@ -62,13 +60,11 @@ export async function activate(
         autoSwitchGlobal: auto.global,
         autoSwitchWorkspace: auto.workspace,
         askWhenOff: askWhenAutoSwitchOff(),
-        statusBar: statusBarEnabled(),
       };
     },
     setAutoSwitchGlobal,
     setAutoSwitchWorkspace,
     setAskWhenOff: setAskWhenAutoSwitchOff,
-    setStatusBar: setStatusBarEnabled,
     switchVersion: async () => {
       await vscode.commands.executeCommand("nvmManager.switch");
     },
@@ -85,7 +81,7 @@ export async function activate(
   const autoSwitch = new AutoSwitch(service);
 
   const updateUi = (): void => {
-    statusBar.update(statusBarEnabled(), service.getCurrent());
+    statusBar.update(service.getCurrent());
     settingsProvider.refresh();
   };
   service.onDidChange(updateUi);
@@ -100,11 +96,6 @@ export async function activate(
   registerCommands(context, { service });
 
   context.subscriptions.push(
-    vscode.window.onDidChangeWindowState((state) => {
-      if (state.focused) {
-        statusBar.update(statusBarEnabled(), service.getCurrent());
-      }
-    }),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (!event.affectsConfiguration("nvmManager")) {
         return;

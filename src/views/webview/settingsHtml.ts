@@ -191,20 +191,6 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     </label>
   </div>
 
-  <div class="card" style="margin-top: 12px;">
-    <div class="group-title">Appearance</div>
-    <label class="row" for="toggle-statusBar">
-      <span class="row-text">
-        <span class="row-label">Status bar</span>
-        <span class="row-desc">Show the active version in the status bar.</span>
-      </span>
-      <span class="switch">
-        <input type="checkbox" id="toggle-statusBar" data-key="statusBar" />
-        <span class="slider"></span>
-      </span>
-    </label>
-  </div>
-
 <script nonce="${nonce}">
   const vscode = acquireVsCodeApi();
   const toggles = document.querySelectorAll("input[data-key]");
@@ -229,7 +215,6 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
         : state.autoSwitchWorkspace
     );
     setChecked("askWhenOff", state.askWhenOff);
-    setChecked("statusBar", state.statusBar);
 
     const workspaceRow = document.getElementById("workspace-row");
     const resetButton = document.getElementById("reset-workspace");

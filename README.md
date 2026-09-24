@@ -26,8 +26,7 @@ nvm symlink on Windows and updates the integrated terminal environment on macOS/
 - **Global and per-project toggles** in the sidebar **Settings** panel:
   - global auto-switch,
   - project override (inherits the global value until you change it),
-  - "ask when off" — prompt before switching when auto-switch is disabled,
-  - status bar visibility.
+  - "ask when off" — prompt before switching when auto-switch is disabled.
 - **Manage versions**: install, uninstall and copy a version from the context menu.
 
 ## Requirements
@@ -63,7 +62,6 @@ To pin a project version, add `.nvmrc` at the repository root:
 | --- | --- | --- | --- |
 | `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
 | `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
-| `nvmManager.statusBar.enabled` | `true` | window | Show the active version in the status bar. |
 | `nvmManager.nvmPath` | `""` | machine-overridable | Windows only. Absolute path to `nvm.exe`. Empty means auto-detect. |
 | `nvmManager.nvmDir` | `""` | machine-overridable | macOS / Linux only. Path to `NVM_DIR`. Empty means auto-detect. |
 

@@ -7,7 +7,6 @@ export const KEYS = {
   nvmDir: "nvmDir",
   autoSwitch: "autoSwitch",
   askWhenAutoSwitchOff: "askWhenAutoSwitchOff",
-  statusBarEnabled: "statusBar.enabled",
 } as const;
 
 export function getConfig(): vscode.WorkspaceConfiguration {
@@ -66,20 +65,8 @@ export async function setAskWhenAutoSwitchOff(value: boolean): Promise<void> {
   );
 }
 
-export async function setStatusBarEnabled(value: boolean): Promise<void> {
-  await getConfig().update(
-    KEYS.statusBarEnabled,
-    value,
-    vscode.ConfigurationTarget.Global,
-  );
-}
-
 export function askWhenAutoSwitchOff(): boolean {
   return getConfig().get<boolean>(KEYS.askWhenAutoSwitchOff, true);
-}
-
-export function statusBarEnabled(): boolean {
-  return getConfig().get<boolean>(KEYS.statusBarEnabled, true);
 }
 
 export function nvmPathSetting(): string {
