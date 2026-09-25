@@ -20,6 +20,7 @@ export interface NvmAdapter {
 
   listInstalled(): Promise<InstalledVersion[]>;
   current(): Promise<string | undefined>;
+  version(): Promise<string | undefined>;
   use(version: string): Promise<void>;
   install(version: string): Promise<void>;
   uninstall(version: string): Promise<void>;

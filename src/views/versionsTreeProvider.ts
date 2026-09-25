@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import type { VersionService } from "../services/versionService";
+import { isEol } from "../util/eol";
 
 type TreeNode = GroupNode | VersionNode | RemoteVersionNode | LoadingNode;
 
@@ -55,12 +56,16 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
         );
       }
       case "version": {
+        const eol = isEol(element.version);
         const item = new vscode.TreeItem(
           `v${element.version}`,
           vscode.TreeItemCollapsibleState.None,
         );
         item.contextValue = element.active ? "active" : "installed";
-        item.description = element.active ? "active" : undefined;
+        item.description =
+          [element.active ? "active" : undefined, eol ? "EOL" : undefined]
+            .filter(Boolean)
+            .join(" · ") || undefined;
         item.iconPath = element.active
           ? new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"))
           : new vscode.ThemeIcon("circle-outline");
@@ -69,9 +74,11 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
           title: "Use This Version",
           arguments: [element],
         };
-        item.tooltip = element.active
-          ? `v${element.version} (active)`
-          : `Use v${element.version}`;
+        item.tooltip = `${
+          element.active
+            ? `v${element.version} (active)`
+            : `Use v${element.version}`
+        }${eol ? " · end of life" : ""}`;
         return item;
       }
       case "remote-version": {
@@ -80,7 +87,13 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
           vscode.TreeItemCollapsibleState.None,
         );
         item.contextValue = "remote";
-        item.description = element.lts ? element.lts : undefined;
+        item.description =
+          [
+            element.lts ? element.lts : undefined,
+            isEol(element.version) ? "EOL" : undefined,
+          ]
+            .filter(Boolean)
+            .join(" · ") || undefined;
         item.iconPath = new vscode.ThemeIcon("cloud-download");
         item.command = {
           command: "nvmManager.install",

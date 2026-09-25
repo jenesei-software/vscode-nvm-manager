@@ -2,7 +2,7 @@
   "name": "nvm-manager",
   "displayName": "NVM Manager",
   "description": "Manage Node.js versions with nvm from VS Code: view installed versions, switch the active one, and auto-switch per project via .nvmrc.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "jenesei-software",
   "license": "MIT",
   "repository": {
@@ -136,6 +136,12 @@
         "title": "Pin Active Version to Project",
         "category": "NVM",
         "icon": "$(pin)"
+      },
+      {
+        "command": "nvmManager.doctor",
+        "title": "Doctor (Diagnostics)",
+        "category": "NVM",
+        "icon": "$(heart)"
       },
       {
         "command": "nvmManager.toggleAutoSwitchWorkspace",

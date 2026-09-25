@@ -65,6 +65,7 @@ export async function activate(
       return {
         hasWorkspace: hasWorkspace(),
         activeVersion: service.getCurrent(),
+        nvmLocation: service.adapterInfo().dir,
         autoSwitchGlobal: auto.global,
         autoSwitchWorkspace: auto.workspace,
         askWhenOff: askWhenAutoSwitchOff(),
@@ -75,6 +76,9 @@ export async function activate(
     setAskWhenOff: setAskWhenAutoSwitchOff,
     switchVersion: async () => {
       await vscode.commands.executeCommand("nvmManager.switch");
+    },
+    runDoctor: async () => {
+      await vscode.commands.executeCommand("nvmManager.doctor");
     },
   });
 
@@ -112,7 +116,7 @@ export async function activate(
     }
   };
 
-  registerCommands(context, { service, projectInfo });
+  registerCommands(context, { service, projectInfo, output });
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((event) => {

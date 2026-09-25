@@ -35,6 +35,22 @@ export class VersionService {
     return this.loadingRemote;
   }
 
+  adapterInfo(): {
+    platform: NodeJS.Platform;
+    dir: string;
+    managesTerminalEnv: boolean;
+  } {
+    return {
+      platform: process.platform,
+      dir: this.adapter.dir,
+      managesTerminalEnv: this.adapter.managesTerminalEnv,
+    };
+  }
+
+  nvmVersion(): Promise<string | undefined> {
+    return this.adapter.version();
+  }
+
   resolve(requested: string): string | undefined {
     return resolveRequested(
       requested,

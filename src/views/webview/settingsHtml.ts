@@ -143,13 +143,34 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
   }
   .switch input:disabled + .slider { opacity: 0.5; }
   .divider { height: 1px; background: var(--vscode-widget-border, var(--vscode-panel-border)); }
+  .active-card:focus-visible,
+  .link:focus-visible,
+  .button:focus-visible {
+    outline: 2px solid var(--vscode-focusBorder);
+    outline-offset: 1px;
+  }
+  .button {
+    display: block;
+    width: calc(100% - 24px);
+    margin: 8px 12px 12px;
+    padding: 7px 10px;
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-background);
+  }
+  .button:hover { background: var(--vscode-button-hoverBackground); }
+  .meta { padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
+  .meta-value { font-family: var(--vscode-editor-font-family); font-size: 12px; word-break: break-all; }
+  @media (prefers-reduced-motion: reduce) {
+    .slider, .slider::before { transition: none; }
+  }
 </style>
 </head>
 <body>
   <button class="card active-card" id="switch" type="button">
     <span class="active-meta">
       <span class="active-label">Active version</span>
-      <span class="active-value" id="active">-</span>
+      <span class="active-value" id="active" aria-live="polite">-</span>
     </span>
     <span class="active-hint">Switch</span>
   </button>
@@ -191,6 +212,16 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     </label>
   </div>
 
+  <div class="card">
+    <div class="group-title">Runtime</div>
+    <div class="meta">
+      <span class="meta-label">nvm location</span>
+      <span class="meta-value" id="nvm-location">-</span>
+    </div>
+    <div class="divider"></div>
+    <button class="link" id="doctor" type="button">Run diagnostics</button>
+  </div>
+
 <script nonce="${nonce}">
   const vscode = acquireVsCodeApi();
   const toggles = document.querySelectorAll("input[data-key]");
@@ -207,6 +238,8 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     document.getElementById("active").textContent = state.activeVersion
       ? "v" + state.activeVersion
       : "none";
+    document.getElementById("nvm-location").textContent =
+      state.nvmLocation || "unknown";
     setChecked("autoSwitchGlobal", state.autoSwitchGlobal);
     setChecked(
       "autoSwitchWorkspace",
@@ -248,6 +281,9 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
   });
   document.getElementById("reset-workspace").addEventListener("click", () => {
     vscode.postMessage({ type: "resetWorkspace" });
+  });
+  document.getElementById("doctor").addEventListener("click", () => {
+    vscode.postMessage({ type: "doctor" });
   });
   window.addEventListener("message", (event) => {
     if (event.data && event.data.type === "state") {

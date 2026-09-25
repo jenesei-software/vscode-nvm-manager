@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-25
+
+### Added
+
+- `NVM: Doctor (Diagnostics)` command and a **Run diagnostics** button in the Settings panel. The
+  report covers the platform, nvm location and version, active and installed versions, PATH,
+  `NVM_HOME` / `NVM_SYMLINK` (Windows) and workspace trust, and is written to the output channel.
+- End-of-life markers for installed and available versions.
+
+### Changed
+
+- The Settings panel now shows the detected nvm location.
+- Accessibility pass on the Settings panel: focus outlines, a live region for the active version and
+  reduced-motion support.
+
 ## [1.1.0] - 2026-09-25
 
 ### Added
@@ -105,7 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...v0.2.0

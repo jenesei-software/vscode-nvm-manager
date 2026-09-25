@@ -1,7 +1,7 @@
 # NVM Manager
 
 [![Marketplace](https://img.shields.io/badge/marketplace-NVM%20Manager-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
-[![Version](https://img.shields.io/badge/version-1.1.0-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Version](https://img.shields.io/badge/version-1.2.0-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
@@ -31,7 +31,18 @@ nvm symlink on Windows and updates the integrated terminal environment on macOS/
   - global auto-switch,
   - project override (inherits the global value until you change it),
   - "ask when off" — prompt before switching when auto-switch is disabled.
-- **Manage versions**: install, uninstall and copy a version from the context menu.
+- **Manage versions**: install, uninstall and copy a version from the context menu, with
+  end-of-life markers on outdated majors.
+- **Install on demand**: when a project pins a version you have not installed, the notification and
+  the Project view offer to install it, resolving `engines.node` ranges against the remote list.
+- **Pin a project version**: `NVM: Pin Active Version to Project` writes the active version to
+  `.nvmrc` (or `.node-version`).
+- **Status bar awareness**: the status bar warns when the active version differs from the project
+  declaration and switches to, or installs, the right version on click.
+- **Diagnostics**: `NVM: Doctor` prints the platform, nvm location, PATH, symlinks and workspace
+  trust to the output channel.
+- **Workspace Trust aware**: in an untrusted workspace the extension shows information but never
+  auto-switches, installs or probes anything declared by project files.
 
 ## Requirements
 
@@ -81,6 +92,8 @@ off and **Ask when off** is on, a notification offers **Switch** and **Always fo
 | `NVM: Refresh Available Versions` | Reload `nvm list available`. |
 | `NVM: Toggle Auto-switch (Global)` | Flip the global auto-switch setting. |
 | `NVM: Toggle Auto-switch (This Project)` | Flip the project override. |
+| `NVM: Pin Active Version to Project` | Write the active version to `.nvmrc` / `.node-version`. |
+| `NVM: Doctor (Diagnostics)` | Print an environment report to the output channel. |
 
 ## Support the project
 

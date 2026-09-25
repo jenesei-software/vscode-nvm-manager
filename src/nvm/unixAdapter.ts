@@ -45,6 +45,18 @@ export class NvmUnixAdapter implements NvmAdapter {
     return stdout.match(/v?(\d+\.\d+\.\d+)/)?.[1];
   }
 
+  async version(): Promise<string | undefined> {
+    const { stdout, code } = await this.execNvm("--version", 15000);
+    if (code !== 0) {
+      return undefined;
+    }
+    const match = stdout.match(/(\d+\.\d+\.\d+)/)?.[1];
+    if (match) {
+      return match;
+    }
+    return stdout.trim() || undefined;
+  }
+
   async use(_version: string): Promise<void> {
     // Switching is applied through the integrated terminal environment.
   }

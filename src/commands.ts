@@ -7,6 +7,7 @@ import {
   setAutoSwitchGlobal,
   setAutoSwitchWorkspace,
 } from "./config";
+import { buildDoctorReport } from "./services/doctor";
 import type { ProjectInfoService } from "./services/projectInfo";
 import type { VersionService } from "./services/versionService";
 import { buildPinContent, choosePinFile } from "./util/pinFile";
@@ -15,6 +16,7 @@ import { compareVersions } from "./util/version";
 interface CommandDependencies {
   service: VersionService;
   projectInfo: ProjectInfoService;
+  output: vscode.OutputChannel;
 }
 
 type SwitchPick = vscode.QuickPickItem & {
@@ -98,7 +100,7 @@ export function registerCommands(
   context: vscode.ExtensionContext,
   dependencies: CommandDependencies,
 ): void {
-  const { service, projectInfo } = dependencies;
+  const { service, projectInfo, output } = dependencies;
 
   context.subscriptions.push(
     vscode.commands.registerCommand("nvmManager.refresh", async () => {
@@ -358,6 +360,19 @@ export function registerCommands(
 
     vscode.commands.registerCommand("nvmManager.checkPackages", async () => {
       await projectInfo.ensureAvailability();
+    }),
+
+    vscode.commands.registerCommand("nvmManager.doctor", async () => {
+      const report = await buildDoctorReport(service);
+      output.appendLine(report);
+      output.show(true);
+      const choice = await vscode.window.showInformationMessage(
+        "NVM Manager: diagnostics written to the NVM Manager output channel.",
+        "Copy",
+      );
+      if (choice === "Copy") {
+        await vscode.env.clipboard.writeText(report);
+      }
     }),
   );
 }

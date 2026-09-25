@@ -4,6 +4,7 @@ import { getSettingsHtml } from "./webview/settingsHtml";
 export interface SettingsState {
   hasWorkspace: boolean;
   activeVersion?: string;
+  nvmLocation?: string;
   autoSwitchGlobal: boolean;
   autoSwitchWorkspace?: boolean;
   askWhenOff: boolean;
@@ -15,6 +16,7 @@ export interface SettingsController {
   setAutoSwitchWorkspace(value: boolean | undefined): Promise<void>;
   setAskWhenOff(value: boolean): Promise<void>;
   switchVersion(): Promise<void>;
+  runDoctor(): Promise<void>;
 }
 
 interface WebviewMessage {
@@ -57,6 +59,9 @@ export class SettingsViewProvider implements vscode.WebviewViewProvider {
       case "switch":
         await this.controller.switchVersion();
         break;
+      case "doctor":
+        await this.controller.runDoctor();
+        return;
       case "resetWorkspace":
         await this.controller.setAutoSwitchWorkspace(undefined);
         break;

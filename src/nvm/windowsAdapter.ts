@@ -58,6 +58,18 @@ export class NvmWindowsAdapter implements NvmAdapter {
     return version;
   }
 
+  async version(): Promise<string | undefined> {
+    const { stdout, code } = await this.exec(["version"], 15000);
+    if (code !== 0) {
+      return undefined;
+    }
+    const match = stdout.match(/(\d+\.\d+\.\d+)/)?.[1];
+    if (match) {
+      return match;
+    }
+    return stdout.trim() || undefined;
+  }
+
   async use(version: string): Promise<void> {
     const { stdout, stderr, code } = await this.exec(["use", version], 120000);
     if (code !== 0) {
