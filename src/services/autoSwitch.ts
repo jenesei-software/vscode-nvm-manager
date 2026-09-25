@@ -65,14 +65,14 @@ export class AutoSwitch {
         return;
       }
 
-      const target = this.service.resolve(declared.raw);
+      const target = this.service.resolveDeclaration(declared);
       if (!target) {
         vscode.window.showWarningMessage(
           `NVM Manager: no installed Node.js version matches "${declared.raw}".`,
         );
         return;
       }
-      if (this.service.getCurrent() === target) {
+      if (this.service.isSatisfied(declared)) {
         return;
       }
 

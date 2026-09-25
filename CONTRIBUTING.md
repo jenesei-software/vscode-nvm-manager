@@ -82,6 +82,13 @@ Releases are automated by the [release workflow](.github/workflows/release.yml)
 build, bumps the version, commits, tags, builds the `.vsix`, publishes to the
 [Visual Studio Marketplace](https://marketplace.visualstudio.com/) and creates a GitHub release.
 
+### Changelog
+
+[CHANGELOG.md](CHANGELOG.md) follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add a
+bullet under `## [Unreleased]` (one of Added / Changed / Fixed / Removed / Deprecated / Security)
+as part of the change. When releasing, move the `Unreleased` entries under a new
+`## [X.Y.Z] - YYYY-MM-DD` heading and update the compare links at the bottom of the file.
+
 One-time setup:
 
 1. **Publisher** — create it at <https://marketplace.visualstudio.com/manage>. The id must match

@@ -11,8 +11,7 @@ import {
   type NodeDeclaration,
   type NodeSource,
 } from "../util/projectSignals";
-import { bestMatch, satisfies } from "../util/semver";
-import { resolveRequested } from "../util/version";
+import { satisfies } from "../util/semver";
 import type { VersionService } from "./versionService";
 
 export interface PackageAvailability {
@@ -110,16 +109,10 @@ export class ProjectInfoService {
       packageJson,
     });
     const declared = declarations[0];
-    const installed = this.service.getInstalled().map((item) => item.version);
     const active = this.service.getCurrent();
-
-    let resolved: string | undefined;
-    if (declared) {
-      resolved =
-        declared.source === "engines"
-          ? bestMatch(declared.raw, installed)
-          : resolveRequested(declared.raw, installed);
-    }
+    const resolved = declared
+      ? this.service.resolveDeclaration(declared)
+      : undefined;
 
     const matches = Boolean(
       declared &&

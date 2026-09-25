@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import type { InstalledVersion, NvmAdapter, RemoteVersion } from "../nvm/types";
+import type { NodeDeclaration } from "../util/projectSignals";
+import { bestMatch, satisfies } from "../util/semver";
 import { resolveRequested } from "../util/version";
 import type { TerminalEnv } from "./terminalEnv";
 
@@ -38,6 +40,24 @@ export class VersionService {
       requested,
       this.installed.map((item) => item.version),
     );
+  }
+
+  resolveDeclaration(declared: NodeDeclaration): string | undefined {
+    const installed = this.installed.map((item) => item.version);
+    return declared.source === "engines"
+      ? bestMatch(declared.raw, installed)
+      : resolveRequested(declared.raw, installed);
+  }
+
+  isSatisfied(declared: NodeDeclaration): boolean {
+    const current = this.currentVersion;
+    if (!current) {
+      return false;
+    }
+    if (declared.source === "engines") {
+      return satisfies(current, declared.raw);
+    }
+    return current === this.resolveDeclaration(declared);
   }
 
   async refresh(): Promise<void> {
