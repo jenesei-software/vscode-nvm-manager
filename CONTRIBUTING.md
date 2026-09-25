@@ -67,6 +67,8 @@ Notes:
 ## Code guidelines
 
 - Keep comments in English; user-facing strings are in English too.
+- Wrap user-facing strings in `vscode.l10n.t(...)` and add the translations under `l10n/` and
+  `package.nls.<locale>.json` (`npm run l10n:extract` regenerates the default bundle).
 - Prefer conventional commit prefixes: `feat:`, `fix:`, `docs:`, `chore:`.
 - Run `npm run check` and `npm test` before opening a pull request and keep them green.
 - Keep pull requests focused: one feature or fix per PR where possible.

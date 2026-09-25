@@ -1,4 +1,4 @@
-import type * as vscode from "vscode";
+import * as vscode from "vscode";
 
 function createNonce(): string {
   const chars =
@@ -17,6 +17,13 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     "style-src 'unsafe-inline'",
     `script-src 'nonce-${nonce}'`,
   ].join("; ");
+
+  const labels = {
+    inherited: vscode.l10n.t("Inherited from the global setting."),
+    overridden: vscode.l10n.t(
+      "Overrides the global setting for this workspace.",
+    ),
+  };
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -169,18 +176,18 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
 <body>
   <button class="card active-card" id="switch" type="button">
     <span class="active-meta">
-      <span class="active-label">Active version</span>
+      <span class="active-label">${vscode.l10n.t("Active version")}</span>
       <span class="active-value" id="active" aria-live="polite">-</span>
     </span>
-    <span class="active-hint">Switch</span>
+    <span class="active-hint">${vscode.l10n.t("Switch")}</span>
   </button>
 
   <div class="card">
-    <div class="group-title">Auto-switch</div>
+    <div class="group-title">${vscode.l10n.t("Auto-switch")}</div>
     <label class="row" for="toggle-autoSwitchGlobal">
       <span class="row-text">
-        <span class="row-label">Global</span>
-        <span class="row-desc">Apply the version from .nvmrc automatically.</span>
+        <span class="row-label">${vscode.l10n.t("Global")}</span>
+        <span class="row-desc">${vscode.l10n.t("Apply the version from .nvmrc automatically.")}</span>
       </span>
       <span class="switch">
         <input type="checkbox" id="toggle-autoSwitchGlobal" data-key="autoSwitchGlobal" />
@@ -190,20 +197,20 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     <div class="divider"></div>
     <label class="row" id="workspace-row" for="toggle-autoSwitchWorkspace">
       <span class="row-text">
-        <span class="row-label">This project</span>
-        <span class="row-desc" id="workspace-desc">Inherited from the global setting.</span>
+        <span class="row-label">${vscode.l10n.t("This project")}</span>
+        <span class="row-desc" id="workspace-desc">${vscode.l10n.t("Inherited from the global setting.")}</span>
       </span>
       <span class="switch">
         <input type="checkbox" id="toggle-autoSwitchWorkspace" data-key="autoSwitchWorkspace" />
         <span class="slider"></span>
       </span>
     </label>
-    <button class="link hidden" id="reset-workspace">Reset project setting to global</button>
+    <button class="link hidden" id="reset-workspace">${vscode.l10n.t("Reset project setting to global")}</button>
     <div class="divider"></div>
     <label class="row" for="toggle-askWhenOff">
       <span class="row-text">
-        <span class="row-label">Ask when off</span>
-        <span class="row-desc">Prompt before switching when auto-switch is disabled.</span>
+        <span class="row-label">${vscode.l10n.t("Ask when off")}</span>
+        <span class="row-desc">${vscode.l10n.t("Prompt before switching when auto-switch is disabled.")}</span>
       </span>
       <span class="switch">
         <input type="checkbox" id="toggle-askWhenOff" data-key="askWhenOff" />
@@ -213,17 +220,18 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
   </div>
 
   <div class="card">
-    <div class="group-title">Runtime</div>
+    <div class="group-title">${vscode.l10n.t("Runtime")}</div>
     <div class="meta">
-      <span class="meta-label">nvm location</span>
+      <span class="meta-label">${vscode.l10n.t("nvm location")}</span>
       <span class="meta-value" id="nvm-location">-</span>
     </div>
     <div class="divider"></div>
-    <button class="link" id="doctor" type="button">Run diagnostics</button>
+    <button class="link" id="doctor" type="button">${vscode.l10n.t("Run diagnostics")}</button>
   </div>
 
 <script nonce="${nonce}">
   const vscode = acquireVsCodeApi();
+  const labels = ${JSON.stringify(labels)};
   const toggles = document.querySelectorAll("input[data-key]");
 
   function setChecked(key, value) {
@@ -261,8 +269,8 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
       workspaceRow.classList.remove("hidden");
       resetButton.classList.toggle("hidden", !overridden);
       workspaceDesc.textContent = overridden
-        ? "Overrides the global setting for this workspace."
-        : "Inherited from the global setting.";
+        ? labels.overridden
+        : labels.inherited;
     }
   }
 

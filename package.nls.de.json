@@ -1,0 +1,23 @@
+{
+  "view.project": "Projekt",
+  "view.versions": "Versionen",
+  "view.settings": "Einstellungen",
+  "command.refresh": "Aktualisieren",
+  "command.switch": "Node.js-Version wechseln…",
+  "command.use": "Diese Version verwenden",
+  "command.install": "Version installieren",
+  "command.uninstall": "Version deinstallieren",
+  "command.copyVersion": "Version kopieren",
+  "command.refreshRemote": "Verfügbare Versionen aktualisieren",
+  "command.toggleAutoSwitchGlobal": "Automatischer Wechsel (global)",
+  "command.switchToDeclared": "Zur Projektversion wechseln",
+  "command.installDeclared": "Projektversion installieren",
+  "command.checkPackages": "Paketmanager prüfen",
+  "command.pinVersion": "Aktive Version im Projekt fixieren",
+  "command.doctor": "Diagnose",
+  "command.toggleAutoSwitchWorkspace": "Automatischer Wechsel (dieses Projekt)",
+  "config.nvmPath": "Nur Windows. Absoluter Pfad zu `nvm.exe`. Leer lassen, um automatisch aus `NVM_HOME` oder `PATH` zu ermitteln.",
+  "config.nvmDir": "Nur macOS / Linux. Pfad zum nvm-Verzeichnis (`NVM_DIR`). Leer lassen, um automatisch aus `NVM_DIR` oder `~/.nvm` zu ermitteln.",
+  "config.autoSwitch": "Beim Öffnen eines Arbeitsbereichs die aktive Node.js-Version automatisch anhand von `.nvmrc` / `.node-version` / `package.json` `engines.node` wechseln. Global oder pro Arbeitsbereich festlegen.",
+  "config.askWhenAutoSwitchOff": "Vor dem Wechseln fragen, wenn der automatische Wechsel deaktiviert ist."
+}

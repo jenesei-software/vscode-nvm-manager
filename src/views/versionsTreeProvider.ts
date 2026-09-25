@@ -36,7 +36,7 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
     switch (element.kind) {
       case "installed":
         return this.groupItem(
-          "Installed",
+          vscode.l10n.t("Installed"),
           String(this.service.getInstalled().length),
           vscode.TreeItemCollapsibleState.Expanded,
           new vscode.ThemeIcon("versions"),
@@ -44,12 +44,12 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
       case "remote": {
         const remote = this.service.getRemote();
         const description = this.service.isLoadingRemote()
-          ? "loading"
+          ? vscode.l10n.t("loading")
           : remote
             ? String(remote.length)
             : undefined;
         return this.groupItem(
-          "Available",
+          vscode.l10n.t("Available"),
           description,
           vscode.TreeItemCollapsibleState.Collapsed,
           new vscode.ThemeIcon("cloud"),
@@ -63,7 +63,10 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
         );
         item.contextValue = element.active ? "active" : "installed";
         item.description =
-          [element.active ? "active" : undefined, eol ? "EOL" : undefined]
+          [
+            element.active ? vscode.l10n.t("active") : undefined,
+            eol ? "EOL" : undefined,
+          ]
             .filter(Boolean)
             .join(" · ") || undefined;
         item.iconPath = element.active
@@ -71,14 +74,14 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
           : new vscode.ThemeIcon("circle-outline");
         item.command = {
           command: "nvmManager.use",
-          title: "Use This Version",
+          title: vscode.l10n.t("Use This Version"),
           arguments: [element],
         };
         item.tooltip = `${
           element.active
-            ? `v${element.version} (active)`
-            : `Use v${element.version}`
-        }${eol ? " · end of life" : ""}`;
+            ? vscode.l10n.t("v{0} (active)", element.version)
+            : vscode.l10n.t("Use v{0}", element.version)
+        }${eol ? ` · ${vscode.l10n.t("end of life")}` : ""}`;
         return item;
       }
       case "remote-version": {
@@ -97,15 +100,15 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
         item.iconPath = new vscode.ThemeIcon("cloud-download");
         item.command = {
           command: "nvmManager.install",
-          title: "Install Version",
+          title: vscode.l10n.t("Install Version"),
           arguments: [element],
         };
-        item.tooltip = `Install v${element.version}`;
+        item.tooltip = vscode.l10n.t("Install v{0}", element.version);
         return item;
       }
       default: {
         const item = new vscode.TreeItem(
-          "Loading available versions...",
+          vscode.l10n.t("Loading available versions..."),
           vscode.TreeItemCollapsibleState.None,
         );
         item.iconPath = new vscode.ThemeIcon("loading~spin");

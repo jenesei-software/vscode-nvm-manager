@@ -47,22 +47,23 @@ export class ProjectTreeProvider
       }
       case "untrusted": {
         const item = new vscode.TreeItem(
-          "Workspace not trusted",
+          vscode.l10n.t("Workspace not trusted"),
           vscode.TreeItemCollapsibleState.None,
         );
-        item.description = "actions disabled";
+        item.description = vscode.l10n.t("actions disabled");
         item.iconPath = new vscode.ThemeIcon(
           "shield",
           new vscode.ThemeColor("list.warningForeground"),
         );
-        item.tooltip =
-          "Trust this workspace to auto-switch, install or probe versions declared by project files.";
+        item.tooltip = vscode.l10n.t(
+          "Trust this workspace to auto-switch, install or probe versions declared by project files.",
+        );
         return item;
       }
       case "group": {
         const isNode = element.group === "node";
         const item = new vscode.TreeItem(
-          isNode ? "Node" : "Package manager",
+          isNode ? vscode.l10n.t("Node") : vscode.l10n.t("Package manager"),
           vscode.TreeItemCollapsibleState.Expanded,
         );
         item.iconPath = new vscode.ThemeIcon(isNode ? "versions" : "package");
@@ -71,12 +72,12 @@ export class ProjectTreeProvider
       }
       case "node-declared": {
         const item = new vscode.TreeItem(
-          "Declared",
+          vscode.l10n.t("Declared"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = `${element.declaration.raw} · ${NODE_SOURCE_LABEL[element.declaration.source]}`;
         item.iconPath = new vscode.ThemeIcon("file-code");
-        item.tooltip = `Open ${element.declaration.file}`;
+        item.tooltip = vscode.l10n.t("Open {0}", element.declaration.file);
         item.command = this.openCommand(
           info.folderPath,
           element.declaration.file,
@@ -87,36 +88,39 @@ export class ProjectTreeProvider
         const resolved = info.node.resolved;
         const remoteResolved = info.node.remoteResolved;
         const item = new vscode.TreeItem(
-          "Resolved",
+          vscode.l10n.t("Resolved"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = resolved
           ? `v${resolved}`
           : remoteResolved
-            ? `install v${remoteResolved}`
-            : "no match";
+            ? vscode.l10n.t("install v{0}", remoteResolved)
+            : vscode.l10n.t("no match");
         item.iconPath = resolved
           ? new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"))
           : new vscode.ThemeIcon("circle-slash");
         item.contextValue = resolved ? "projectResolved" : "projectNoMatch";
         item.tooltip = resolved
-          ? `Matches installed v${resolved}`
+          ? vscode.l10n.t("Matches installed v{0}", resolved)
           : remoteResolved
-            ? `Not installed — click to install v${remoteResolved}`
-            : "No installed version matches — install it";
+            ? vscode.l10n.t(
+                "Not installed — click to install v{0}",
+                remoteResolved,
+              )
+            : vscode.l10n.t("No installed version matches — install it");
         return item;
       }
       case "node-active": {
         const { active, resolved, matches } = info.node;
         const item = new vscode.TreeItem(
-          "Active",
+          vscode.l10n.t("Active"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = active
           ? matches
-            ? `v${active} · matches`
-            : `v${active} · differs`
-          : "none";
+            ? vscode.l10n.t("v{0} · matches", active)
+            : vscode.l10n.t("v{0} · differs", active)
+          : vscode.l10n.t("none");
         item.iconPath = active
           ? matches
             ? new vscode.ThemeIcon(
@@ -136,23 +140,30 @@ export class ProjectTreeProvider
         if (active && !matches && resolved) {
           item.command = {
             command: "nvmManager.switchToDeclared",
-            title: "Switch to Project Version",
+            title: vscode.l10n.t("Switch to Project Version"),
           };
-          item.tooltip = `Active v${active} differs from v${resolved} — click to switch`;
+          item.tooltip = vscode.l10n.t(
+            "Active v{0} differs from v{1} — click to switch",
+            active,
+            resolved,
+          );
         } else if (active && matches) {
-          item.tooltip = `Active v${active} matches the project declaration`;
+          item.tooltip = vscode.l10n.t(
+            "Active v{0} matches the project declaration",
+            active,
+          );
         }
         return item;
       }
       case "pm-declared": {
         const declared = info.packageManager.declared;
         const item = new vscode.TreeItem(
-          "Declared",
+          vscode.l10n.t("Declared"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = declared
           ? `${declared.name}${declared.version ? `@${declared.version}` : ""} · ${declared.source}`
-          : "none";
+          : vscode.l10n.t("none");
         item.iconPath = new vscode.ThemeIcon("package");
         if (info.folderPath) {
           item.command = this.openCommand(info.folderPath, "package.json");
@@ -162,24 +173,24 @@ export class ProjectTreeProvider
       case "pm-detected": {
         const manager = info.packageManager;
         const item = new vscode.TreeItem(
-          "Detected",
+          vscode.l10n.t("Detected"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = manager.detected
           ? `${manager.detected} · ${manager.detectedFrom}`
-          : "unknown";
+          : vscode.l10n.t("unknown");
         item.iconPath = new vscode.ThemeIcon("search");
         return item;
       }
       case "pm-used": {
         const manager = info.packageManager;
         const item = new vscode.TreeItem(
-          "In use",
+          vscode.l10n.t("In use"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = manager.used
           ? `${manager.used} · ${manager.usedFrom}`
-          : "not installed";
+          : vscode.l10n.t("not installed");
         item.iconPath = new vscode.ThemeIcon(
           manager.used ? "check" : "circle-outline",
         );
@@ -187,7 +198,9 @@ export class ProjectTreeProvider
       }
       case "pm-check": {
         const item = new vscode.TreeItem(
-          element.checking ? "Checking availability..." : "Check availability",
+          element.checking
+            ? vscode.l10n.t("Checking availability...")
+            : vscode.l10n.t("Check availability"),
           vscode.TreeItemCollapsibleState.None,
         );
         item.iconPath = new vscode.ThemeIcon(
@@ -196,7 +209,7 @@ export class ProjectTreeProvider
         if (!element.checking) {
           item.command = {
             command: "nvmManager.checkPackages",
-            title: "Check Package Manager Availability",
+            title: vscode.l10n.t("Check Package Manager Availability"),
           };
         }
         return item;
@@ -207,8 +220,8 @@ export class ProjectTreeProvider
           vscode.TreeItemCollapsibleState.None,
         );
         item.description = element.item.available
-          ? (element.item.version ?? "available")
-          : "not found";
+          ? (element.item.version ?? vscode.l10n.t("available"))
+          : vscode.l10n.t("not found");
         item.iconPath = element.item.available
           ? new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"))
           : new vscode.ThemeIcon("circle-slash");
@@ -233,7 +246,7 @@ export class ProjectTreeProvider
 
     if (!element) {
       if (!info.hasFolder) {
-        return [{ kind: "empty", message: "No folder opened" }];
+        return [{ kind: "empty", message: vscode.l10n.t("No folder opened") }];
       }
       const roots: ProjectNode[] = [
         { kind: "group", group: "node" },
@@ -295,7 +308,7 @@ export class ProjectTreeProvider
     }
     return {
       command: "vscode.open",
-      title: "Open",
+      title: vscode.l10n.t("Open"),
       arguments: [vscode.Uri.file(path.join(root, file))],
     };
   }

@@ -1,0 +1,23 @@
+{
+  "view.project": "项目",
+  "view.versions": "版本",
+  "view.settings": "设置",
+  "command.refresh": "刷新",
+  "command.switch": "切换 Node.js 版本…",
+  "command.use": "使用此版本",
+  "command.install": "安装版本",
+  "command.uninstall": "卸载版本",
+  "command.copyVersion": "复制版本",
+  "command.refreshRemote": "刷新可用版本",
+  "command.toggleAutoSwitchGlobal": "自动切换（全局）",
+  "command.switchToDeclared": "切换到项目版本",
+  "command.installDeclared": "安装项目版本",
+  "command.checkPackages": "检查包管理器可用性",
+  "command.pinVersion": "将当前版本固定到项目",
+  "command.doctor": "诊断",
+  "command.toggleAutoSwitchWorkspace": "自动切换（此项目）",
+  "config.nvmPath": "仅限 Windows。`nvm.exe` 的绝对路径。留空则从 `NVM_HOME` 或 `PATH` 自动检测。",
+  "config.nvmDir": "仅限 macOS / Linux。nvm 目录（`NVM_DIR`）的路径。留空则从 `NVM_DIR` 或 `~/.nvm` 自动检测。",
+  "config.autoSwitch": "打开工作区时，根据 `.nvmrc` / `.node-version` / `package.json` 的 `engines.node` 自动切换活动的 Node.js 版本。可全局或按工作区设置。",
+  "config.askWhenAutoSwitchOff": "自动切换关闭时，切换前先询问。"
+}

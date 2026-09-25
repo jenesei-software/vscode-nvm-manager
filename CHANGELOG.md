@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-25
+
+### Added
+
+- Localized interface in Russian, Simplified Chinese, Spanish, Japanese and German: views,
+  commands, settings, notifications and tree labels.
+
 ## [1.2.0] - 2026-09-25
 
 ### Added
@@ -120,7 +127,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.2.0...v1.0.0

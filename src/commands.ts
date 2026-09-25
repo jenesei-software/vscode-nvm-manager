@@ -37,7 +37,9 @@ function requireTrusted(): boolean {
     return true;
   }
   void vscode.window.showWarningMessage(
-    "NVM Manager: trust this workspace to manage versions declared by project files.",
+    vscode.l10n.t(
+      "NVM Manager: trust this workspace to manage versions declared by project files.",
+    ),
   );
   return false;
 }
@@ -57,21 +59,25 @@ function extractVersion(argument: unknown): string | undefined {
   return undefined;
 }
 
+function errorMessage(error: unknown): string {
+  return vscode.l10n.t("NVM Manager: {0}", (error as Error).message);
+}
+
 async function runUse(service: VersionService, version: string): Promise<void> {
   try {
     await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
-        title: `NVM Manager: switching to v${version}...`,
+        title: vscode.l10n.t("NVM Manager: switching to v{0}...", version),
       },
       () => service.use(version),
     );
     vscode.window.setStatusBarMessage(
-      `NVM Manager: active Node.js v${version}`,
+      vscode.l10n.t("NVM Manager: active Node.js v{0}", version),
       4000,
     );
   } catch (error) {
-    vscode.window.showErrorMessage(`NVM Manager: ${(error as Error).message}`);
+    vscode.window.showErrorMessage(errorMessage(error));
   }
 }
 
@@ -83,16 +89,16 @@ async function runInstall(
     await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
-        title: `NVM Manager: installing v${version}...`,
+        title: vscode.l10n.t("NVM Manager: installing v{0}...", version),
       },
       () => service.install(version),
     );
     vscode.window.setStatusBarMessage(
-      `NVM Manager: installed v${version}`,
+      vscode.l10n.t("NVM Manager: installed v{0}", version),
       4000,
     );
   } catch (error) {
-    vscode.window.showErrorMessage(`NVM Manager: ${(error as Error).message}`);
+    vscode.window.showErrorMessage(errorMessage(error));
   }
 }
 
@@ -107,9 +113,7 @@ export function registerCommands(
       try {
         await service.refresh();
       } catch (error) {
-        vscode.window.showErrorMessage(
-          `NVM Manager: ${(error as Error).message}`,
-        );
+        vscode.window.showErrorMessage(errorMessage(error));
       }
     }),
 
@@ -117,9 +121,7 @@ export function registerCommands(
       try {
         await service.refreshRemote(true);
       } catch (error) {
-        vscode.window.showErrorMessage(
-          `NVM Manager: ${(error as Error).message}`,
-        );
+        vscode.window.showErrorMessage(errorMessage(error));
       }
     }),
 
@@ -137,14 +139,14 @@ export function registerCommands(
       }
       for (const [major, list] of byMajor) {
         picks.push({
-          label: `Node ${major}`,
+          label: vscode.l10n.t("Node {0}", major),
           kind: vscode.QuickPickItemKind.Separator,
         });
         for (const item of list) {
           const declared = node.resolved === item.version;
           const description = [
-            item.active ? "active" : undefined,
-            declared ? "declared" : undefined,
+            item.active ? vscode.l10n.t("active") : undefined,
+            declared ? vscode.l10n.t("declared") : undefined,
           ]
             .filter(Boolean)
             .join(" · ");
@@ -166,13 +168,13 @@ export function registerCommands(
         const latest = remote[0]?.version;
         if (latestLts || latest) {
           picks.push({
-            label: "Install",
+            label: vscode.l10n.t("Install"),
             kind: vscode.QuickPickItemKind.Separator,
           });
         }
         if (latestLts) {
           picks.push({
-            label: "$(cloud-download) Install latest LTS",
+            label: vscode.l10n.t("$(cloud-download) Install latest LTS"),
             description: `v${latestLts}`,
             version: latestLts,
             install: true,
@@ -180,7 +182,7 @@ export function registerCommands(
         }
         if (latest && latest !== latestLts) {
           picks.push({
-            label: "$(cloud-download) Install latest",
+            label: vscode.l10n.t("$(cloud-download) Install latest"),
             description: `v${latest}`,
             version: latest,
             install: true,
@@ -192,15 +194,18 @@ export function registerCommands(
 
       if (picks.length === 0) {
         vscode.window.showWarningMessage(
-          "NVM Manager: no installed Node.js versions found.",
+          vscode.l10n.t("NVM Manager: no installed Node.js versions found."),
         );
         return;
       }
 
       const picked = await vscode.window.showQuickPick(picks, {
         placeHolder: node.declared
-          ? `Select a Node.js version (project: ${node.declared})`
-          : "Select a Node.js version",
+          ? vscode.l10n.t(
+              "Select a Node.js version (project: {0})",
+              node.declared,
+            )
+          : vscode.l10n.t("Select a Node.js version"),
         matchOnDescription: true,
       });
       if (!picked?.version) {
@@ -234,24 +239,23 @@ export function registerCommands(
         if (!version) {
           return;
         }
+        const uninstall = vscode.l10n.t("Uninstall");
         const confirm = await vscode.window.showWarningMessage(
-          `Uninstall Node.js v${version}?`,
+          vscode.l10n.t("Uninstall Node.js v{0}?", version),
           { modal: true },
-          "Uninstall",
+          uninstall,
         );
-        if (confirm !== "Uninstall") {
+        if (confirm !== uninstall) {
           return;
         }
         try {
           await service.uninstall(version);
           vscode.window.setStatusBarMessage(
-            `NVM Manager: uninstalled v${version}`,
+            vscode.l10n.t("NVM Manager: uninstalled v{0}", version),
             4000,
           );
         } catch (error) {
-          vscode.window.showErrorMessage(
-            `NVM Manager: ${(error as Error).message}`,
-          );
+          vscode.window.showErrorMessage(errorMessage(error));
         }
       },
     ),
@@ -272,7 +276,10 @@ export function registerCommands(
         const next = !readAutoSwitch().global;
         await setAutoSwitchGlobal(next);
         vscode.window.setStatusBarMessage(
-          `NVM Manager: global auto-switch ${next ? "enabled" : "disabled"}`,
+          vscode.l10n.t(
+            "NVM Manager: global auto-switch {0}",
+            next ? vscode.l10n.t("enabled") : vscode.l10n.t("disabled"),
+          ),
           4000,
         );
       },
@@ -283,14 +290,19 @@ export function registerCommands(
       async () => {
         if (!hasWorkspace()) {
           vscode.window.showWarningMessage(
-            "NVM Manager: open a workspace to configure project auto-switch.",
+            vscode.l10n.t(
+              "NVM Manager: open a workspace to configure project auto-switch.",
+            ),
           );
           return;
         }
         const next = !readAutoSwitch().effective;
         await setAutoSwitchWorkspace(next);
         vscode.window.setStatusBarMessage(
-          `NVM Manager: project auto-switch ${next ? "enabled" : "disabled"}`,
+          vscode.l10n.t(
+            "NVM Manager: project auto-switch {0}",
+            next ? vscode.l10n.t("enabled") : vscode.l10n.t("disabled"),
+          ),
           4000,
         );
       },
@@ -316,7 +328,7 @@ export function registerCommands(
         (node.declaredSource !== "engines" ? node.declared : undefined);
       if (!target) {
         vscode.window.showWarningMessage(
-          "NVM Manager: could not resolve a version to install.",
+          vscode.l10n.t("NVM Manager: could not resolve a version to install."),
         );
         return;
       }
@@ -327,14 +339,14 @@ export function registerCommands(
       const folder = vscode.workspace.workspaceFolders?.[0];
       if (!folder) {
         vscode.window.showWarningMessage(
-          "NVM Manager: open a workspace to pin a version.",
+          vscode.l10n.t("NVM Manager: open a workspace to pin a version."),
         );
         return;
       }
       const active = service.getCurrent();
       if (!active) {
         vscode.window.showWarningMessage(
-          "NVM Manager: no active Node.js version to pin.",
+          vscode.l10n.t("NVM Manager: no active Node.js version to pin."),
         );
         return;
       }
@@ -349,11 +361,12 @@ export function registerCommands(
         Buffer.from(buildPinContent(active), "utf8"),
       );
       projectInfo.refresh();
+      const open = vscode.l10n.t("Open");
       const choice = await vscode.window.showInformationMessage(
-        `NVM Manager: pinned Node.js v${active} to ${file}.`,
-        "Open",
+        vscode.l10n.t("NVM Manager: pinned Node.js v{0} to {1}.", active, file),
+        open,
       );
-      if (choice === "Open") {
+      if (choice === open) {
         await vscode.window.showTextDocument(uri);
       }
     }),
@@ -366,11 +379,14 @@ export function registerCommands(
       const report = await buildDoctorReport(service);
       output.appendLine(report);
       output.show(true);
+      const copy = vscode.l10n.t("Copy");
       const choice = await vscode.window.showInformationMessage(
-        "NVM Manager: diagnostics written to the NVM Manager output channel.",
-        "Copy",
+        vscode.l10n.t(
+          "NVM Manager: diagnostics written to the NVM Manager output channel.",
+        ),
+        copy,
       );
-      if (choice === "Copy") {
+      if (choice === copy) {
         await vscode.env.clipboard.writeText(report);
       }
     }),

@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import * as vscode from "vscode";
 import { run } from "../util/exec";
 
 export function normalizeNvmPath(value: string): string {
@@ -10,7 +11,9 @@ export function normalizeNvmPath(value: string): string {
 export async function detectNvmPath(configured?: string): Promise<string> {
   if (process.platform !== "win32") {
     throw new Error(
-      "NVM Manager currently supports Windows (nvm-windows) only.",
+      vscode.l10n.t(
+        "NVM Manager currently supports Windows (nvm-windows) only.",
+      ),
     );
   }
 
@@ -42,7 +45,9 @@ export async function detectNvmPath(configured?: string): Promise<string> {
   }
 
   throw new Error(
-    'nvm.exe not found. Install nvm-windows or set "nvmManager.nvmPath".',
+    vscode.l10n.t(
+      'nvm.exe not found. Install nvm-windows or set "nvmManager.nvmPath".',
+    ),
   );
 }
 
@@ -64,6 +69,8 @@ export async function detectNvmDir(configured?: string): Promise<string> {
   }
 
   throw new Error(
-    'nvm not found. Install nvm (nvm-sh) or set "nvmManager.nvmDir".',
+    vscode.l10n.t(
+      'nvm not found. Install nvm (nvm-sh) or set "nvmManager.nvmDir".',
+    ),
   );
 }

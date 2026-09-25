@@ -2,7 +2,7 @@
   "name": "nvm-manager",
   "displayName": "NVM Manager",
   "description": "Manage Node.js versions with nvm from VS Code: view installed versions, switch the active one, and auto-switch per project via .nvmrc.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "jenesei-software",
   "license": "MIT",
   "repository": {
@@ -36,6 +36,7 @@
   ],
   "icon": "resources/icon.png",
   "main": "./dist/extension.js",
+  "l10n": "./l10n",
   "activationEvents": [
     "onStartupFinished",
     "workspaceContains:.nvmrc"
@@ -54,17 +55,17 @@
       "nvmManager": [
         {
           "id": "nvmManager.project",
-          "name": "Project",
+          "name": "%view.project%",
           "icon": "resources/nvm.svg"
         },
         {
           "id": "nvmManager.versions",
-          "name": "Versions",
+          "name": "%view.versions%",
           "icon": "resources/nvm.svg"
         },
         {
           "id": "nvmManager.settings",
-          "name": "Settings",
+          "name": "%view.settings%",
           "type": "webview",
           "icon": "resources/nvm.svg"
         }
@@ -73,79 +74,79 @@
     "commands": [
       {
         "command": "nvmManager.refresh",
-        "title": "Refresh",
+        "title": "%command.refresh%",
         "category": "NVM",
         "icon": "$(refresh)"
       },
       {
         "command": "nvmManager.switch",
-        "title": "Switch Node.js Version...",
+        "title": "%command.switch%",
         "category": "NVM",
         "icon": "$(versions)"
       },
       {
         "command": "nvmManager.use",
-        "title": "Use This Version",
+        "title": "%command.use%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.install",
-        "title": "Install Version",
+        "title": "%command.install%",
         "category": "NVM",
         "icon": "$(cloud-download)"
       },
       {
         "command": "nvmManager.uninstall",
-        "title": "Uninstall Version",
+        "title": "%command.uninstall%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.copyVersion",
-        "title": "Copy Version",
+        "title": "%command.copyVersion%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.refreshRemote",
-        "title": "Refresh Available Versions",
+        "title": "%command.refreshRemote%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.toggleAutoSwitchGlobal",
-        "title": "Toggle Auto-switch (Global)",
+        "title": "%command.toggleAutoSwitchGlobal%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.switchToDeclared",
-        "title": "Switch to Project Version",
+        "title": "%command.switchToDeclared%",
         "category": "NVM",
         "icon": "$(arrow-swap)"
       },
       {
         "command": "nvmManager.installDeclared",
-        "title": "Install Project Version",
+        "title": "%command.installDeclared%",
         "category": "NVM",
         "icon": "$(cloud-download)"
       },
       {
         "command": "nvmManager.checkPackages",
-        "title": "Check Package Manager Availability",
+        "title": "%command.checkPackages%",
         "category": "NVM"
       },
       {
         "command": "nvmManager.pinVersion",
-        "title": "Pin Active Version to Project",
+        "title": "%command.pinVersion%",
         "category": "NVM",
         "icon": "$(pin)"
       },
       {
         "command": "nvmManager.doctor",
-        "title": "Doctor (Diagnostics)",
+        "title": "%command.doctor%",
         "category": "NVM",
         "icon": "$(heart)"
       },
       {
         "command": "nvmManager.toggleAutoSwitchWorkspace",
-        "title": "Toggle Auto-switch (This Project)",
+        "title": "%command.toggleAutoSwitchWorkspace%",
         "category": "NVM"
       }
     ],
@@ -235,25 +236,25 @@
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "markdownDescription": "Windows only. Absolute path to `nvm.exe`. Leave empty to auto-detect from `NVM_HOME` or `PATH`."
+          "markdownDescription": "%config.nvmPath%"
         },
         "nvmManager.nvmDir": {
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "markdownDescription": "macOS / Linux only. Path to the nvm directory (`NVM_DIR`). Leave empty to auto-detect from `NVM_DIR` or `~/.nvm`."
+          "markdownDescription": "%config.nvmDir%"
         },
         "nvmManager.autoSwitch": {
           "type": "boolean",
           "default": false,
           "scope": "resource",
-          "markdownDescription": "Auto-switch the active Node.js version from `.nvmrc` / `.node-version` / `package.json` `engines.node` when a workspace is opened. Set globally or per workspace."
+          "markdownDescription": "%config.autoSwitch%"
         },
         "nvmManager.askWhenAutoSwitchOff": {
           "type": "boolean",
           "default": true,
           "scope": "window",
-          "markdownDescription": "Ask before switching when auto-switch is disabled."
+          "markdownDescription": "%config.askWhenAutoSwitchOff%"
         }
       }
     }
@@ -269,6 +270,7 @@
     "typecheck": "tsc --noEmit",
     "check:registry": "node scripts/check-registry.mjs",
     "check": "npm run lint && npm run typecheck && npm run check:registry",
+    "l10n:extract": "npx @vscode/l10n-dev export --outDir ./l10n ./src",
     "test": "tsc -p tsconfig.test.json && node --test \"out/test/*.test.js\"",
     "pretest:integration": "npm run build:prod && tsc -p tsconfig.test.json",
     "test:integration": "vscode-test",

@@ -1,3 +1,4 @@
+import * as vscode from "vscode";
 import { detectNvmDir, detectNvmPath } from "./detect";
 import type { NvmAdapter } from "./types";
 import { NvmUnixAdapter } from "./unixAdapter";
@@ -14,7 +15,10 @@ export async function createAdapter(
     return new NvmUnixAdapter(await detectNvmDir(configuredDir));
   }
   throw new Error(
-    `NVM Manager does not support the "${process.platform}" platform yet.`,
+    vscode.l10n.t(
+      'NVM Manager does not support the "{0}" platform yet.',
+      process.platform,
+    ),
   );
 }
 

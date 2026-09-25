@@ -1,0 +1,23 @@
+{
+  "view.project": "プロジェクト",
+  "view.versions": "バージョン",
+  "view.settings": "設定",
+  "command.refresh": "更新",
+  "command.switch": "Node.js バージョンを切り替え…",
+  "command.use": "このバージョンを使用",
+  "command.install": "バージョンをインストール",
+  "command.uninstall": "バージョンをアンインストール",
+  "command.copyVersion": "バージョンをコピー",
+  "command.refreshRemote": "利用可能なバージョンを更新",
+  "command.toggleAutoSwitchGlobal": "自動切り替え（グローバル）",
+  "command.switchToDeclared": "プロジェクトのバージョンに切り替え",
+  "command.installDeclared": "プロジェクトのバージョンをインストール",
+  "command.checkPackages": "パッケージマネージャーを確認",
+  "command.pinVersion": "現在のバージョンをプロジェクトに固定",
+  "command.doctor": "診断",
+  "command.toggleAutoSwitchWorkspace": "自動切り替え（このプロジェクト）",
+  "config.nvmPath": "Windows のみ。`nvm.exe` への絶対パス。空の場合は `NVM_HOME` または `PATH` から自動検出します。",
+  "config.nvmDir": "macOS / Linux のみ。nvm ディレクトリ（`NVM_DIR`）へのパス。空の場合は `NVM_DIR` または `~/.nvm` から自動検出します。",
+  "config.autoSwitch": "ワークスペースを開いたときに、`.nvmrc` / `.node-version` / `package.json` の `engines.node` に従ってアクティブな Node.js バージョンを自動的に切り替えます。グローバルまたはワークスペース単位で設定できます。",
+  "config.askWhenAutoSwitchOff": "自動切り替えが無効のとき、切り替える前に確認します。"
+}

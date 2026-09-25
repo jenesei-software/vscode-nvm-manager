@@ -83,14 +83,20 @@ export class AutoSwitch {
         return;
       }
 
+      const switchLabel = vscode.l10n.t("Switch");
+      const alwaysLabel = vscode.l10n.t("Always for this project");
       const choice = await vscode.window.showInformationMessage(
-        `NVM Manager: switch to Node.js v${target} for "${folder.name}"?`,
-        "Switch",
-        "Always for this project",
+        vscode.l10n.t(
+          'NVM Manager: switch to Node.js v{0} for "{1}"?',
+          target,
+          folder.name,
+        ),
+        switchLabel,
+        alwaysLabel,
       );
-      if (choice === "Switch") {
+      if (choice === switchLabel) {
         await this.use(target);
-      } else if (choice === "Always for this project") {
+      } else if (choice === alwaysLabel) {
         await setAutoSwitchWorkspace(true);
         await this.use(target);
       }
@@ -100,7 +106,10 @@ export class AutoSwitch {
   }
 
   private async offerInstall(declared: NodeDeclaration): Promise<void> {
-    const message = `NVM Manager: no installed Node.js version matches "${declared.raw}".`;
+    const message = vscode.l10n.t(
+      'NVM Manager: no installed Node.js version matches "{0}".',
+      declared.raw,
+    );
     try {
       await this.service.refreshRemote();
     } catch {
@@ -111,22 +120,30 @@ export class AutoSwitch {
       vscode.window.showWarningMessage(message);
       return;
     }
-    const choice = await vscode.window.showWarningMessage(message, "Install");
-    if (choice !== "Install") {
+    const installLabel = vscode.l10n.t("Install");
+    const choice = await vscode.window.showWarningMessage(
+      message,
+      installLabel,
+    );
+    if (choice !== installLabel) {
       return;
     }
     try {
       await vscode.window.withProgress(
         {
           location: vscode.ProgressLocation.Notification,
-          title: `NVM Manager: installing v${remoteTarget}...`,
+          title: vscode.l10n.t("NVM Manager: installing v{0}...", remoteTarget),
         },
         () => this.service.install(remoteTarget),
       );
       await this.use(remoteTarget);
     } catch (error) {
       vscode.window.showErrorMessage(
-        `NVM Manager: failed to install v${remoteTarget}. ${(error as Error).message}`,
+        vscode.l10n.t(
+          "NVM Manager: failed to install v{0}. {1}",
+          remoteTarget,
+          (error as Error).message,
+        ),
       );
     }
   }
@@ -135,12 +152,16 @@ export class AutoSwitch {
     try {
       await this.service.use(target);
       vscode.window.setStatusBarMessage(
-        `NVM Manager: switched to Node.js v${target}`,
+        vscode.l10n.t("NVM Manager: switched to Node.js v{0}", target),
         4000,
       );
     } catch (error) {
       vscode.window.showErrorMessage(
-        `NVM Manager: failed to switch to v${target}. ${(error as Error).message}`,
+        vscode.l10n.t(
+          "NVM Manager: failed to switch to v{0}. {1}",
+          target,
+          (error as Error).message,
+        ),
       );
     }
   }

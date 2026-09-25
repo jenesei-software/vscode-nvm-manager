@@ -1,0 +1,23 @@
+{
+  "view.project": "Проект",
+  "view.versions": "Версии",
+  "view.settings": "Настройки",
+  "command.refresh": "Обновить",
+  "command.switch": "Переключить версию Node.js…",
+  "command.use": "Использовать эту версию",
+  "command.install": "Установить версию",
+  "command.uninstall": "Удалить версию",
+  "command.copyVersion": "Скопировать версию",
+  "command.refreshRemote": "Обновить доступные версии",
+  "command.toggleAutoSwitchGlobal": "Автосмена: глобально",
+  "command.switchToDeclared": "Переключиться на версию проекта",
+  "command.installDeclared": "Установить версию проекта",
+  "command.checkPackages": "Проверить менеджер пакетов",
+  "command.pinVersion": "Закрепить активную версию в проекте",
+  "command.doctor": "Диагностика",
+  "command.toggleAutoSwitchWorkspace": "Автосмена: этот проект",
+  "config.nvmPath": "Только Windows. Абсолютный путь к `nvm.exe`. Оставьте пустым для автоопределения из `NVM_HOME` или `PATH`.",
+  "config.nvmDir": "Только macOS / Linux. Путь к каталогу nvm (`NVM_DIR`). Оставьте пустым для автоопределения из `NVM_DIR` или `~/.nvm`.",
+  "config.autoSwitch": "Автоматически переключать активную версию Node.js по `.nvmrc` / `.node-version` / `package.json` `engines.node` при открытии воркспейса. Настраивается глобально или для воркспейса.",
+  "config.askWhenAutoSwitchOff": "Спрашивать перед переключением, когда автосмена отключена."
+}
