@@ -23,6 +23,7 @@ export interface PackageAvailability {
 
 export interface ProjectInfo {
   hasFolder: boolean;
+  trusted: boolean;
   folderName?: string;
   folderPath?: string;
   node: {
@@ -31,6 +32,7 @@ export interface ProjectInfo {
     declaredSource?: NodeSource;
     declaredFile?: string;
     resolved?: string;
+    remoteResolved?: string;
     active?: string;
     matches: boolean;
     status: "no-folder" | "not-specified" | "resolved" | "no-match";
@@ -42,6 +44,7 @@ export interface ProjectInfo {
 
 const NO_FOLDER: ProjectInfo = {
   hasFolder: false,
+  trusted: true,
   node: { declarations: [], matches: false, status: "no-folder" },
   packageManager: { conflicts: [] },
   checkingAvailability: false,
@@ -114,6 +117,13 @@ export class ProjectInfoService {
     const resolved = declared
       ? this.service.resolveDeclaration(declared)
       : undefined;
+    const remoteResolved =
+      declared && !resolved
+        ? this.service.resolveRemoteDeclaration(declared)
+        : undefined;
+    if (declared && !resolved && this.service.getRemote() === undefined) {
+      void this.service.refreshRemote();
+    }
 
     const matches = Boolean(
       declared &&
@@ -128,6 +138,7 @@ export class ProjectInfoService {
 
     this.info = {
       hasFolder: true,
+      trusted: vscode.workspace.isTrusted,
       folderName: folder.name,
       folderPath: root,
       node: {
@@ -136,6 +147,7 @@ export class ProjectInfoService {
         declaredSource: declared?.source,
         declaredFile: declared?.file,
         resolved,
+        remoteResolved,
         active,
         matches,
         status: !declared
@@ -163,6 +175,9 @@ export class ProjectInfoService {
   }
 
   async ensureAvailability(): Promise<void> {
+    if (!vscode.workspace.isTrusted) {
+      return;
+    }
     const candidates = this.candidates();
     if (this.availability || candidates.length === 0) {
       return;

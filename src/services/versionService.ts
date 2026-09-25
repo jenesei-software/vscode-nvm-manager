@@ -49,6 +49,16 @@ export class VersionService {
       : resolveRequested(declared.raw, installed);
   }
 
+  resolveRemoteDeclaration(declared: NodeDeclaration): string | undefined {
+    const remote = this.remote?.map((item) => item.version);
+    if (!remote) {
+      return undefined;
+    }
+    return declared.source === "engines"
+      ? bestMatch(declared.raw, remote)
+      : resolveRequested(declared.raw, remote);
+  }
+
   isSatisfied(declared: NodeDeclaration): boolean {
     const current = this.currentVersion;
     if (!current) {

@@ -1,3 +1,5 @@
+import * as fs from "node:fs";
+import * as path from "node:path";
 import * as vscode from "vscode";
 import {
   hasWorkspace,
@@ -7,10 +9,35 @@ import {
 } from "./config";
 import type { ProjectInfoService } from "./services/projectInfo";
 import type { VersionService } from "./services/versionService";
+import { buildPinContent, choosePinFile } from "./util/pinFile";
+import { compareVersions } from "./util/version";
 
 interface CommandDependencies {
   service: VersionService;
   projectInfo: ProjectInfoService;
+}
+
+type SwitchPick = vscode.QuickPickItem & {
+  version?: string;
+  install?: boolean;
+};
+
+function highest(versions: string[]): string | undefined {
+  return versions.reduce<string | undefined>(
+    (best, current) =>
+      best === undefined || compareVersions(current, best) > 0 ? current : best,
+    undefined,
+  );
+}
+
+function requireTrusted(): boolean {
+  if (vscode.workspace.isTrusted) {
+    return true;
+  }
+  void vscode.window.showWarningMessage(
+    "NVM Manager: trust this workspace to manage versions declared by project files.",
+  );
+  return false;
 }
 
 function extractVersion(argument: unknown): string | undefined {
@@ -96,21 +123,91 @@ export function registerCommands(
 
     vscode.commands.registerCommand("nvmManager.switch", async () => {
       const installed = service.getInstalled();
-      if (installed.length === 0) {
+      const node = projectInfo.getInfo().node;
+      const picks: SwitchPick[] = [];
+
+      const byMajor = new Map<string, typeof installed>();
+      for (const item of installed) {
+        const major = item.version.split(".")[0] ?? item.version;
+        const list = byMajor.get(major) ?? [];
+        list.push(item);
+        byMajor.set(major, list);
+      }
+      for (const [major, list] of byMajor) {
+        picks.push({
+          label: `Node ${major}`,
+          kind: vscode.QuickPickItemKind.Separator,
+        });
+        for (const item of list) {
+          const declared = node.resolved === item.version;
+          const description = [
+            item.active ? "active" : undefined,
+            declared ? "declared" : undefined,
+          ]
+            .filter(Boolean)
+            .join(" · ");
+          picks.push({
+            label: `v${item.version}`,
+            description: description || undefined,
+            version: item.version,
+          });
+        }
+      }
+
+      const remote = service.getRemote();
+      if (remote) {
+        const latestLts = highest(
+          remote
+            .filter((item) => item.lts !== false)
+            .map((item) => item.version),
+        );
+        const latest = remote[0]?.version;
+        if (latestLts || latest) {
+          picks.push({
+            label: "Install",
+            kind: vscode.QuickPickItemKind.Separator,
+          });
+        }
+        if (latestLts) {
+          picks.push({
+            label: "$(cloud-download) Install latest LTS",
+            description: `v${latestLts}`,
+            version: latestLts,
+            install: true,
+          });
+        }
+        if (latest && latest !== latestLts) {
+          picks.push({
+            label: "$(cloud-download) Install latest",
+            description: `v${latest}`,
+            version: latest,
+            install: true,
+          });
+        }
+      } else {
+        void service.refreshRemote();
+      }
+
+      if (picks.length === 0) {
         vscode.window.showWarningMessage(
           "NVM Manager: no installed Node.js versions found.",
         );
         return;
       }
-      const picked = await vscode.window.showQuickPick(
-        installed.map((item) => ({
-          label: `v${item.version}`,
-          description: item.active ? "active" : undefined,
-        })),
-        { placeHolder: "Select a Node.js version" },
-      );
-      if (picked) {
-        await runUse(service, picked.label.slice(1));
+
+      const picked = await vscode.window.showQuickPick(picks, {
+        placeHolder: node.declared
+          ? `Select a Node.js version (project: ${node.declared})`
+          : "Select a Node.js version",
+        matchOnDescription: true,
+      });
+      if (!picked?.version) {
+        return;
+      }
+      if (picked.install) {
+        await runInstall(service, picked.version);
+      } else {
+        await runUse(service, picked.version);
       }
     }),
 
@@ -198,6 +295,9 @@ export function registerCommands(
     ),
 
     vscode.commands.registerCommand("nvmManager.switchToDeclared", async () => {
+      if (!requireTrusted()) {
+        return;
+      }
       const resolved = projectInfo.getInfo().node.resolved;
       if (resolved) {
         await runUse(service, resolved);
@@ -205,11 +305,55 @@ export function registerCommands(
     }),
 
     vscode.commands.registerCommand("nvmManager.installDeclared", async () => {
-      const node = projectInfo.getInfo().node;
-      if (!node.declared || node.declaredSource === "engines") {
+      if (!requireTrusted()) {
         return;
       }
-      await runInstall(service, node.declared);
+      const node = projectInfo.getInfo().node;
+      const target =
+        node.remoteResolved ??
+        (node.declaredSource !== "engines" ? node.declared : undefined);
+      if (!target) {
+        vscode.window.showWarningMessage(
+          "NVM Manager: could not resolve a version to install.",
+        );
+        return;
+      }
+      await runInstall(service, target);
+    }),
+
+    vscode.commands.registerCommand("nvmManager.pinVersion", async () => {
+      const folder = vscode.workspace.workspaceFolders?.[0];
+      if (!folder) {
+        vscode.window.showWarningMessage(
+          "NVM Manager: open a workspace to pin a version.",
+        );
+        return;
+      }
+      const active = service.getCurrent();
+      if (!active) {
+        vscode.window.showWarningMessage(
+          "NVM Manager: no active Node.js version to pin.",
+        );
+        return;
+      }
+      const root = folder.uri.fsPath;
+      const file = choosePinFile({
+        nvmrc: fs.existsSync(path.join(root, ".nvmrc")),
+        nodeVersion: fs.existsSync(path.join(root, ".node-version")),
+      });
+      const uri = vscode.Uri.joinPath(folder.uri, file);
+      await vscode.workspace.fs.writeFile(
+        uri,
+        Buffer.from(buildPinContent(active), "utf8"),
+      );
+      projectInfo.refresh();
+      const choice = await vscode.window.showInformationMessage(
+        `NVM Manager: pinned Node.js v${active} to ${file}.`,
+        "Open",
+      );
+      if (choice === "Open") {
+        await vscode.window.showTextDocument(uri);
+      }
     }),
 
     vscode.commands.registerCommand("nvmManager.checkPackages", async () => {

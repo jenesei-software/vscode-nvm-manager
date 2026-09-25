@@ -11,6 +11,7 @@ import {
 
 type ProjectNode =
   | { kind: "empty"; message: string }
+  | { kind: "untrusted" }
   | { kind: "group"; group: "node" | "packageManager" }
   | { kind: "node-declared"; declaration: NodeDeclaration }
   | { kind: "node-resolved" }
@@ -44,6 +45,20 @@ export class ProjectTreeProvider
         item.iconPath = new vscode.ThemeIcon("info");
         return item;
       }
+      case "untrusted": {
+        const item = new vscode.TreeItem(
+          "Workspace not trusted",
+          vscode.TreeItemCollapsibleState.None,
+        );
+        item.description = "actions disabled";
+        item.iconPath = new vscode.ThemeIcon(
+          "shield",
+          new vscode.ThemeColor("list.warningForeground"),
+        );
+        item.tooltip =
+          "Trust this workspace to auto-switch, install or probe versions declared by project files.";
+        return item;
+      }
       case "group": {
         const isNode = element.group === "node";
         const item = new vscode.TreeItem(
@@ -70,18 +85,25 @@ export class ProjectTreeProvider
       }
       case "node-resolved": {
         const resolved = info.node.resolved;
+        const remoteResolved = info.node.remoteResolved;
         const item = new vscode.TreeItem(
           "Resolved",
           vscode.TreeItemCollapsibleState.None,
         );
-        item.description = resolved ? `v${resolved}` : "no match";
+        item.description = resolved
+          ? `v${resolved}`
+          : remoteResolved
+            ? `install v${remoteResolved}`
+            : "no match";
         item.iconPath = resolved
           ? new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"))
           : new vscode.ThemeIcon("circle-slash");
         item.contextValue = resolved ? "projectResolved" : "projectNoMatch";
         item.tooltip = resolved
           ? `Matches installed v${resolved}`
-          : "No installed version matches — install it";
+          : remoteResolved
+            ? `Not installed — click to install v${remoteResolved}`
+            : "No installed version matches — install it";
         return item;
       }
       case "node-active": {
@@ -213,10 +235,14 @@ export class ProjectTreeProvider
       if (!info.hasFolder) {
         return [{ kind: "empty", message: "No folder opened" }];
       }
-      return [
+      const roots: ProjectNode[] = [
         { kind: "group", group: "node" },
         { kind: "group", group: "packageManager" },
       ];
+      if (!info.trusted) {
+        roots.push({ kind: "untrusted" });
+      }
+      return roots;
     }
 
     if (element.kind !== "group") {
@@ -252,7 +278,9 @@ export class ProjectTreeProvider
       children.push({ kind: "pm-check", checking: true });
     } else {
       children.push({ kind: "pm-check", checking: false });
-      void this.service.ensureAvailability();
+      if (info.trusted) {
+        void this.service.ensureAvailability();
+      }
     }
 
     return children;

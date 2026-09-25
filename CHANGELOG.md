@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-25
+
+### Added
+
+- `NVM: Pin Active Version to Project`, which writes the active version to `.nvmrc` (or
+  `.node-version` when that file already exists).
+- Install-missing flow: when a project declares a version that is not installed, auto-switch and the
+  Project view offer to install it, resolving `engines.node` ranges against `nvm ls-remote`.
+
+### Changed
+
+- The status bar shows when the active version differs from the project declaration and switches to,
+  or installs, the declared version on click.
+- The switch quick pick groups versions by major, marks LTS and the declared version, and adds
+  "Install latest LTS" / "Install latest" entries.
+- Pinned the GitHub Actions to commit SHAs and added integration smoke tests against a stubbed nvm.
+
+### Security
+
+- Workspace Trust: in an untrusted workspace the extension shows information but does not
+  auto-switch, install or probe anything declared by project files.
+
 ## [1.0.0] - 2026-09-25
 
 ### Security
@@ -83,7 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...v0.2.0
 [0.1.4]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.3...v0.1.4

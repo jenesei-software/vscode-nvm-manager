@@ -2,7 +2,7 @@
   "name": "nvm-manager",
   "displayName": "NVM Manager",
   "description": "Manage Node.js versions with nvm from VS Code: view installed versions, switch the active one, and auto-switch per project via .nvmrc.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "jenesei-software",
   "license": "MIT",
   "repository": {
@@ -16,6 +16,13 @@
   "engines": {
     "vscode": "^1.85.0",
     "node": ">=22"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "NVM Manager executes the nvm CLI and reads version files from the workspace. In untrusted workspaces it shows information but does not auto-switch, install or probe anything declared by project files."
+    },
+    "virtualWorkspaces": false
   },
   "categories": [
     "Other"
@@ -125,6 +132,12 @@
         "category": "NVM"
       },
       {
+        "command": "nvmManager.pinVersion",
+        "title": "Pin Active Version to Project",
+        "category": "NVM",
+        "icon": "$(pin)"
+      },
+      {
         "command": "nvmManager.toggleAutoSwitchWorkspace",
         "title": "Toggle Auto-switch (This Project)",
         "category": "NVM"
@@ -135,6 +148,11 @@
         {
           "command": "nvmManager.switch",
           "when": "view == nvmManager.versions",
+          "group": "navigation@1"
+        },
+        {
+          "command": "nvmManager.pinVersion",
+          "when": "view == nvmManager.project",
           "group": "navigation@1"
         },
         {
@@ -246,15 +264,24 @@
     "check:registry": "node scripts/check-registry.mjs",
     "check": "npm run lint && npm run typecheck && npm run check:registry",
     "test": "tsc -p tsconfig.test.json && node --test \"out/test/*.test.js\"",
+    "pretest:integration": "npm run build:prod && tsc -p tsconfig.test.json",
+    "test:integration": "vscode-test",
     "vsix": "vsce package",
     "vsix:publish": "vsce publish"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^22.20.4",
     "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.2.1",
     "esbuild": "^0.25.12",
     "typescript": "^5.5.4"
+  },
+  "overrides": {
+    "diff": "^9.0.0",
+    "serialize-javascript": "^7.1.2"
   }
 }

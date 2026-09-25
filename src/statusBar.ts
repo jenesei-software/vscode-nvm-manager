@@ -1,5 +1,12 @@
 import * as vscode from "vscode";
 
+export interface StatusBarProjectState {
+  declared?: string;
+  resolved?: string;
+  matches: boolean;
+  trusted: boolean;
+}
+
 export class StatusBar {
   private readonly item: vscode.StatusBarItem;
 
@@ -12,7 +19,35 @@ export class StatusBar {
     this.item.command = "nvmManager.switch";
   }
 
-  update(version?: string): void {
+  update(version: string | undefined, project: StatusBarProjectState): void {
+    this.item.backgroundColor = undefined;
+    this.item.command = "nvmManager.switch";
+
+    if (project.declared && !project.matches && project.trusted) {
+      this.item.backgroundColor = new vscode.ThemeColor(
+        "statusBarItem.warningBackground",
+      );
+      if (project.resolved) {
+        this.item.text = `⬢ v${version ?? "?"} → v${project.resolved}`;
+        this.item.command = "nvmManager.switchToDeclared";
+        this.item.tooltip = `Project wants ${project.declared}; active ${version ? `v${version}` : "version"} differs. Click to switch to v${project.resolved}.`;
+      } else {
+        this.item.text = `$(warning) ${version ? `v${version}` : "nvm"}`;
+        this.item.command = "nvmManager.installDeclared";
+        this.item.tooltip = `Project wants ${project.declared}, which is not installed. Click to install.`;
+      }
+      this.item.show();
+      return;
+    }
+
+    if (project.declared && !project.matches && !project.trusted) {
+      this.item.text = `${version ? `⬢ v${version}` : "⬢ nvm"} $(shield)`;
+      this.item.tooltip =
+        "A project version is declared. Trust the workspace to apply it.";
+      this.item.show();
+      return;
+    }
+
     this.item.text = version ? `⬢ v${version}` : "⬢ nvm";
     this.item.tooltip = version
       ? `NVM Manager: active Node.js v${version}. Click to switch.`

@@ -55,7 +55,7 @@ export class AutoSwitch {
   constructor(private readonly service: VersionService) {}
 
   async apply(folder: vscode.WorkspaceFolder): Promise<void> {
-    if (this.running) {
+    if (this.running || !vscode.workspace.isTrusted) {
       return;
     }
     this.running = true;
@@ -67,9 +67,7 @@ export class AutoSwitch {
 
       const target = this.service.resolveDeclaration(declared);
       if (!target) {
-        vscode.window.showWarningMessage(
-          `NVM Manager: no installed Node.js version matches "${declared.raw}".`,
-        );
+        await this.offerInstall(declared);
         return;
       }
       if (this.service.isSatisfied(declared)) {
@@ -98,6 +96,38 @@ export class AutoSwitch {
       }
     } finally {
       this.running = false;
+    }
+  }
+
+  private async offerInstall(declared: NodeDeclaration): Promise<void> {
+    const message = `NVM Manager: no installed Node.js version matches "${declared.raw}".`;
+    try {
+      await this.service.refreshRemote();
+    } catch {
+      // Remote lookup is best effort; fall back to a plain warning below.
+    }
+    const remoteTarget = this.service.resolveRemoteDeclaration(declared);
+    if (!remoteTarget) {
+      vscode.window.showWarningMessage(message);
+      return;
+    }
+    const choice = await vscode.window.showWarningMessage(message, "Install");
+    if (choice !== "Install") {
+      return;
+    }
+    try {
+      await vscode.window.withProgress(
+        {
+          location: vscode.ProgressLocation.Notification,
+          title: `NVM Manager: installing v${remoteTarget}...`,
+        },
+        () => this.service.install(remoteTarget),
+      );
+      await this.use(remoteTarget);
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        `NVM Manager: failed to install v${remoteTarget}. ${(error as Error).message}`,
+      );
     }
   }
 

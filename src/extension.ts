@@ -93,9 +93,15 @@ export async function activate(
   const autoSwitch = new AutoSwitch(service);
 
   const updateUi = (): void => {
-    statusBar.update(service.getCurrent());
-    settingsProvider.refresh();
     projectInfo.refresh();
+    const info = projectInfo.getInfo();
+    statusBar.update(service.getCurrent(), {
+      declared: info.node.declared,
+      resolved: info.node.resolved,
+      matches: info.node.matches,
+      trusted: info.trusted,
+    });
+    settingsProvider.refresh();
   };
   service.onDidChange(updateUi);
 
@@ -119,6 +125,10 @@ export async function activate(
       }
     }),
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
+      updateUi();
+      void runAutoSwitch();
+    }),
+    vscode.workspace.onDidGrantWorkspaceTrust(() => {
       updateUi();
       void runAutoSwitch();
     }),
