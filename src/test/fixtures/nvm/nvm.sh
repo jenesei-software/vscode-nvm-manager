@@ -18,7 +18,7 @@ nvm() {
         'v20.11.0 (LTS: Iron)' \
         'v18.20.4 (LTS: Hydrogen)'
       ;;
-    version)
+    version | --version)
       echo '0.39.7'
       ;;
     use | install)

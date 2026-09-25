@@ -10,7 +10,7 @@ tsconfig.json
 tsconfig.test.json
 esbuild.mjs
 biome.json
-vscode-test.mjs
+.vscode-test.mjs
 out/**
 node_modules/**
 **/*.map
