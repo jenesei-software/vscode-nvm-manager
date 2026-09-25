@@ -47,7 +47,7 @@
         {
           "id": "nvmManager",
           "title": "NVM Manager",
-          "icon": "resources/nvm.svg"
+          "icon": "resources/icon.svg"
         }
       ]
     },
@@ -56,18 +56,18 @@
         {
           "id": "nvmManager.project",
           "name": "%view.project%",
-          "icon": "resources/nvm.svg"
+          "icon": "resources/icon.svg"
         },
         {
           "id": "nvmManager.versions",
           "name": "%view.versions%",
-          "icon": "resources/nvm.svg"
+          "icon": "resources/icon.svg"
         },
         {
           "id": "nvmManager.settings",
           "name": "%view.settings%",
           "type": "webview",
-          "icon": "resources/nvm.svg"
+          "icon": "resources/icon.svg"
         }
       ]
     },

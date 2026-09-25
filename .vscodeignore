@@ -16,3 +16,4 @@ node_modules/**
 **/*.map
 .agents/**
 CONTRIBUTING.md
+resources/screenshot.png
