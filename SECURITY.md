@@ -2,11 +2,15 @@
 
 ## Scope
 
-NVM Manager is a local VS Code extension for nvm-windows. It runs `nvm.exe` with user-supplied
-version strings, reads project files (`.nvmrc`, `.node-version`, `package.json`) from the open
+NVM Manager is a local VS Code extension for nvm-windows and nvm-sh (macOS / Linux). It runs `nvm`
+with version strings, reads project files (`.nvmrc`, `.node-version`, `package.json`) from the open
 workspace, and writes VS Code settings. It has no server component, no telemetry and no network
-communication of its own — `nvm install` / `nvm list available` reach the network through
-`nvm.exe` itself.
+communication of its own — `nvm install` / `nvm list available` reach the network through `nvm`
+itself.
+
+Values taken from project files are validated before they reach `nvm`: version strings must match a
+strict allowlist, arguments passed to a shell are quoted, and the package manager probe only runs
+known binaries. Reports that bypass these checks are especially welcome.
 
 ## Reporting a vulnerability
 
@@ -19,7 +23,7 @@ Please report security issues privately instead of opening a public issue:
 Please include:
 
 - the NVM Manager version,
-- your VS Code version and Windows version,
+- your VS Code version and operating system,
 - what happens and how to reproduce it,
 - the potential impact — what an attacker could achieve.
 

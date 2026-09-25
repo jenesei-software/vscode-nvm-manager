@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.5] - 2026-09-24
+## [1.0.0] - 2026-09-25
+
+### Security
+
+- Prevented command execution from workspace files: declared Node.js versions are validated against a
+  strict allowlist before reaching `nvm`, arguments handed to a shell are quoted, and the package
+  manager availability probe only runs a known allowlist of binaries.
+
+## [0.2.0] - 2026-09-24
 
 ### Changed
 
@@ -75,8 +83,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.5...HEAD
-[0.1.5]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...v0.1.5
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.2.0...v1.0.0
+[0.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...v0.2.0
 [0.1.4]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.1...v0.1.2

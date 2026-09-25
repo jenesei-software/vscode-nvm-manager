@@ -38,7 +38,7 @@ npm run vsix          # package the .vsix
 
    ```powershell
    npm run vsix
-   code --install-extension nvm-manager-0.0.1.vsix
+   code --install-extension nvm-manager-<version>.vsix
    ```
 
    The version in the file name comes from `package.json`.
@@ -71,39 +71,13 @@ Notes:
 - Run `npm run check` and `npm test` before opening a pull request and keep them green.
 - Keep pull requests focused: one feature or fix per PR where possible.
 
-## Releasing
+## Changelog
 
-Maintainer notes. The version lives in `package.json` and follows
-[Semantic Versioning](https://semver.org/); every release is tagged `vX.Y.Z` and listed in
-[CHANGELOG.md](CHANGELOG.md).
+Notable changes are tracked in [CHANGELOG.md](CHANGELOG.md) following
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add a bullet under `## [Unreleased]`
+(Added / Changed / Fixed / Removed / Deprecated / Security) as part of your change.
 
-Releases are automated by the [release workflow](.github/workflows/release.yml)
-(Actions → **Release** → *Run workflow*, pick `patch` / `minor` / `major`). It verifies the
-build, bumps the version, commits, tags, builds the `.vsix`, publishes to the
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/) and creates a GitHub release.
-
-### Changelog
-
-[CHANGELOG.md](CHANGELOG.md) follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Add a
-bullet under `## [Unreleased]` (one of Added / Changed / Fixed / Removed / Deprecated / Security)
-as part of the change. When releasing, move the `Unreleased` entries under a new
-`## [X.Y.Z] - YYYY-MM-DD` heading and update the compare links at the bottom of the file.
-
-One-time setup:
-
-1. **Publisher** — create it at <https://marketplace.visualstudio.com/manage>. The id must match
-   `publisher` in `package.json` (`jenesei-software`).
-2. **PAT** — in Azure DevOps create a Personal Access Token with the **Marketplace → Manage**
-   scope (organization *All accessible organizations*).
-3. **Secret** — add it to the repository as the `VSCE_PAT` secret
-   (Settings → Secrets and variables → Actions). Without it the workflow still tags and builds
-   the `.vsix`, but skips the Marketplace publish.
-
-For a local publish, set `VSCE_PAT` in the environment and run:
-
-```powershell
-npm run vsix:publish
-```
+Maintainers: the release steps live in [docs/RELEASING.md](docs/RELEASING.md).
 
 By contributing, you agree that your contributions are licensed under the
 [MIT License](LICENSE).

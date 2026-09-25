@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import type { InstalledVersion, NvmAdapter, RemoteVersion } from "../nvm/types";
 import type { NodeDeclaration } from "../util/projectSignals";
 import { bestMatch, satisfies } from "../util/semver";
-import { resolveRequested } from "../util/version";
+import { isSafeVersion, resolveRequested } from "../util/version";
 import type { TerminalEnv } from "./terminalEnv";
 
 export class VersionService {
@@ -88,6 +88,7 @@ export class VersionService {
   }
 
   async use(version: string): Promise<void> {
+    this.assertVersion(version);
     await this.adapter.use(version);
     if (this.adapter.managesTerminalEnv) {
       this.terminalEnv?.select(version, this.adapter.dir);
@@ -96,14 +97,22 @@ export class VersionService {
   }
 
   async install(version: string): Promise<void> {
+    this.assertVersion(version);
     await this.adapter.install(version);
     this.remote = this.remote?.filter((item) => item.version !== version);
     await this.refresh();
   }
 
   async uninstall(version: string): Promise<void> {
+    this.assertVersion(version);
     await this.adapter.uninstall(version);
     await this.refresh();
+  }
+
+  private assertVersion(version: string): void {
+    if (!isSafeVersion(version)) {
+      throw new Error(`refusing invalid Node.js version "${version}".`);
+    }
   }
 
   dispose(): void {

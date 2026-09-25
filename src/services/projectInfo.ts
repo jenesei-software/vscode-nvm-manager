@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { run } from "../util/exec";
 import {
   detectPackageManager,
+  isKnownPackageManager,
   type PackageManagerDetection,
 } from "../util/packageManager";
 import {
@@ -188,7 +189,7 @@ export class ProjectInfoService {
   private candidates(): string[] {
     const manager = this.info.packageManager;
     const names = new Set<string>();
-    if (manager.declared) {
+    if (manager.declared && isKnownPackageManager(manager.declared.name)) {
       names.add(manager.declared.name);
     }
     if (manager.detected) {

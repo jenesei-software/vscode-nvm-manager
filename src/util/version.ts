@@ -109,6 +109,18 @@ function stripV(value: string): string {
   return trimmed.startsWith("v") ? trimmed.slice(1) : trimmed;
 }
 
+const SAFE_VERSION =
+  /^(?:v?\d+(?:\.\d+){0,2}|node|latest|current|system|lts(?:\/[\w.*-]+)?|\*|--lts)$/i;
+
+/**
+ * Guard for anything that ends up as an `nvm` argument. Rejects shell
+ * metacharacters and option-like values so project files (`.nvmrc`,
+ * `.node-version`) cannot inject commands or flags.
+ */
+export function isSafeVersion(value: string): boolean {
+  return SAFE_VERSION.test(value.trim());
+}
+
 export function parseNvmrc(raw: string): string | undefined {
   const line = raw
     .split(/\r?\n/)

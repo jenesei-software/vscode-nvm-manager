@@ -1,5 +1,16 @@
 export type PackageManager = "npm" | "yarn" | "pnpm" | "bun";
 
+export const PACKAGE_MANAGERS: readonly PackageManager[] = [
+  "npm",
+  "yarn",
+  "pnpm",
+  "bun",
+];
+
+export function isKnownPackageManager(name: string): name is PackageManager {
+  return (PACKAGE_MANAGERS as readonly string[]).includes(name);
+}
+
 export interface DeclaredPackageManager {
   name: string;
   version?: string;
