@@ -49,6 +49,7 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     border-radius: 8px;
     background: var(--vscode-sideBar-background);
     overflow: hidden;
+    margin-bottom: 12px;
   }
   .active-card {
     width: 100%;
@@ -57,7 +58,6 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
     justify-content: space-between;
     gap: 10px;
     padding: 12px;
-    margin-bottom: 12px;
     text-align: left;
     color: inherit;
   }

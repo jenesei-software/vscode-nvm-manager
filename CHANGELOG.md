@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Settings panel: the Runtime card no longer sticks to the Auto-switch card.
+
 ## [1.3.0] - 2026-09-25
 
 ### Added
