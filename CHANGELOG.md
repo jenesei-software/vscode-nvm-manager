@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-09-24
+
 ### Changed
 
 - Standardized the activity bar and view icons to a single-color 24×24 SVG.
@@ -73,7 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v0.1.1...v0.1.2
