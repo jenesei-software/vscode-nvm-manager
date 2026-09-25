@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-09-25
+
 ### Fixed
 
-- CI: the integration job could not find the test configuration file.
 - Settings panel: the nvm location is rendered with the panel font.
 
 ## [1.3.1] - 2026-09-25
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Settings panel: the Runtime card no longer sticks to the Auto-switch card.
+- CI: the integration job could not find the test configuration file.
 
 ## [1.3.0] - 2026-09-25
 
@@ -138,7 +140,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sidebar Settings panel: auto-switch global/project, ask-when-off, status bar.
 - Install, uninstall and copy a version from the context menu.
 
-[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/jenesei-software/vscode-nvm-manager/compare/v1.1.0...v1.2.0
