@@ -167,7 +167,7 @@ export function getSettingsHtml(_webview: vscode.Webview): string {
   .button:hover { background: var(--vscode-button-hoverBackground); }
   .meta { padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
   .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
-  .meta-value { font-family: var(--vscode-editor-font-family); font-size: 12px; word-break: break-all; }
+  .meta-value { word-break: break-all; }
   @media (prefers-reduced-motion: reduce) {
     .slider, .slider::before { transition: none; }
   }

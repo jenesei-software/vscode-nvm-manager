@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - CI: the integration job could not find the test configuration file.
+- Settings panel: the nvm location is rendered with the panel font.
 
 ## [1.3.1] - 2026-09-25
 
