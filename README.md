@@ -101,7 +101,7 @@ off and **Ask when off** is on, a notification offers **Switch** and **Always fo
 
 NVM Manager is free and open source. If it is useful to you:
 
-- ⭐ **Star the repository** — it helps other people find it.
+- ⭐ **Star the repository on [GitHub](https://github.com/jenesei-software/vscode-nvm-manager)** — it helps other people find it.
 - ☕ **[DonationAlerts](https://www.donationalerts.com/r/cyrilstrone)** — a one-time donation keeps the project alive.
 
 ## License
