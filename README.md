@@ -1,70 +1,87 @@
 # NVM Manager
 
-[![Marketplace](https://img.shields.io/badge/marketplace-NVM%20Manager-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
-[![Version](https://img.shields.io/badge/version-1.3.2-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-2ea44f)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Marketplace](https://img.shields.io/badge/Marketplace-NVM%20Manager-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
+[![Version](https://img.shields.io/badge/version-1.3.2-2ea44f)](CHANGELOG.md)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-2ea44f)](package.json)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-A VS Code extension for **nvm**: see every installed Node.js version, switch the active one, and
-let a project pin its version through `.nvmrc` — all without leaving the editor.
+A VS Code extension for **nvm**: see every installed Node.js version, switch the
+active one, and let a project pin its version through `.nvmrc` - all without
+leaving the editor.
 
-Works with **nvm-windows** on Windows and **nvm-sh** on macOS/Linux: switching repoints the global
-nvm symlink on Windows and updates the integrated terminal environment on macOS/Linux.
+Works with **nvm-windows** on Windows and **nvm-sh** on macOS/Linux: switching
+repoints the global nvm symlink on Windows and updates the integrated terminal
+environment on macOS/Linux.
 
-<p><img src="resources/screenshot.png" alt="NVM Manager" width="400"></p>
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="resources/screenshot.png" alt="NVM Manager" width="400"><br><sub><b>Versions</b></sub></td>
+  </tr>
+</table>
 
 ## Features
 
-- **Project view**: the Node.js version a project declares and where it comes from (`.nvmrc`,
-  `.node-version`, `package.json` `engines.node`), whether it matches the active version, and the
-  package manager — declared (`packageManager` / `devEngines`), detected from lockfiles, actually
-  in use, and whether it is available on `PATH`.
-- **Versions view** in the activity bar: installed versions with the active one marked, plus an
-  **Available** list (`nvm list available` / `nvm ls-remote`) you can install from.
+- **Project view**: the Node.js version a project declares and where it comes
+  from (`.nvmrc`, `.node-version`, `package.json` `engines.node`), whether it
+  matches the active version, and the package manager - declared
+  (`packageManager` / `devEngines`), detected from lockfiles, actually in use,
+  and whether it is available on `PATH`.
+- **Versions view** in the activity bar: installed versions with the active one
+  marked, plus an **Available** list (`nvm list available` / `nvm ls-remote`)
+  you can install from.
 - **Switch in one click** from the tree, the status bar, or the command palette
   (`NVM: Switch Node.js Version...`).
-- **Active version in the status bar** — click it to switch.
-- **Auto-switch per project**: reads `.nvmrc`, then `.node-version`, then `package.json`
-  `engines.node`, resolves it against the installed list (`22`, `v22.16.0`, `22.16`, `lts/*`,
-  `node`) and switches.
+- **Active version in the status bar** - click it to switch.
+- **Auto-switch per project**: reads `.nvmrc`, then `.node-version`, then
+  `package.json` `engines.node`, resolves it against the installed list (`22`,
+  `v22.16.0`, `22.16`, `lts/*`, `node`) and switches.
 - **Global and per-project toggles** in the sidebar **Settings** panel:
   - global auto-switch,
   - project override (inherits the global value until you change it),
-  - "ask when off" — prompt before switching when auto-switch is disabled.
-- **Manage versions**: install, uninstall and copy a version from the context menu, with
-  end-of-life markers on outdated majors.
-- **Install on demand**: when a project pins a version you have not installed, the notification and
-  the Project view offer to install it, resolving `engines.node` ranges against the remote list.
-- **Pin a project version**: `NVM: Pin Active Version to Project` writes the active version to
-  `.nvmrc` (or `.node-version`).
-- **Status bar awareness**: the status bar warns when the active version differs from the project
-  declaration and switches to, or installs, the right version on click.
-- **Diagnostics**: `NVM: Doctor` prints the platform, nvm location, PATH, symlinks and workspace
-  trust to the output channel.
-- **Workspace Trust aware**: in an untrusted workspace the extension shows information but never
-  auto-switches, installs or probes anything declared by project files.
-- **Localized** in English, Russian, Simplified Chinese, Spanish, Japanese and German — following
-  your VS Code display language.
+  - "ask when off" - prompt before switching when auto-switch is disabled.
+- **Manage versions**: install, uninstall and copy a version from the context
+  menu, with end-of-life markers on outdated majors.
+- **Install on demand**: when a project pins a version you have not installed,
+  the notification and the Project view offer to install it, resolving
+  `engines.node` ranges against the remote list.
+- **Pin a project version**: `NVM: Pin Active Version to Project` writes the
+  active version to `.nvmrc` (or `.node-version`).
+- **Status bar awareness**: the status bar warns when the active version differs
+  from the project declaration and switches to, or installs, the right version
+  on click.
+- **Diagnostics**: `NVM: Doctor` prints the platform, nvm location, PATH,
+  symlinks and workspace trust to the output channel.
+- **Workspace Trust aware**: in an untrusted workspace the extension shows
+  information but never auto-switches, installs or probes anything declared by
+  project files.
+- **Localized** in English, Russian, Simplified Chinese, Spanish, Japanese and
+  German - following your VS Code display language.
 
 ## Requirements
 
-- **Windows**: [nvm-windows](https://github.com/coreybutler/nvm-windows) installed and `nvm`
-  available. Auto-detects `nvm.exe` from `NVM_HOME`, then `PATH`, or set `nvmManager.nvmPath`.
-- **macOS / Linux**: [nvm-sh](https://github.com/nvm-sh/nvm) installed. Auto-detects `NVM_DIR`
-  or `~/.nvm`, or set `nvmManager.nvmDir`. Switching applies to VS Code's integrated terminals.
+- **Windows**: [nvm-windows](https://github.com/coreybutler/nvm-windows)
+  installed and `nvm` available. Auto-detects `nvm.exe` from `NVM_HOME`, then
+  `PATH`, or set `nvmManager.nvmPath`.
+- **macOS / Linux**: [nvm-sh](https://github.com/nvm-sh/nvm) installed.
+  Auto-detects `NVM_DIR` or `~/.nvm`, or set `nvmManager.nvmDir`. Switching
+  applies to VS Code's integrated terminals.
 
 ## Installation
 
 - From the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager),
   or from the Command Palette (`Ctrl+P` / `Cmd+P`): `ext install jenesei-software.nvm-manager`.
-- Or install a local build: **Extensions** view → `...` → **Install from VSIX...**.
+- Or install a local build: **Extensions** view > `...` > **Install from
+  VSIX...**.
 
 ## Getting started
 
 1. Open the **NVM Manager** icon in the activity bar.
-2. The **Versions** view lists what is installed; the active version has a green check.
-3. Click a version (or the status bar item) to switch. On macOS/Linux, open a **new** integrated
-   terminal to pick up the change.
+2. The **Versions** view lists what is installed; the active version has a green
+   check.
+3. Click a version (or the status bar item) to switch. On macOS/Linux, open a
+   **new** integrated terminal to pick up the change.
 4. Open **Settings** in the same container to configure auto-switch.
 
 To pin a project version, add `.nvmrc` at the repository root:
@@ -77,13 +94,14 @@ To pin a project version, add `.nvmrc` at the repository root:
 
 | Setting | Default | Scope | Description |
 | --- | --- | --- | --- |
-| `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
-| `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
 | `nvmManager.nvmPath` | `""` | machine-overridable | Windows only. Absolute path to `nvm.exe`. Empty means auto-detect. |
 | `nvmManager.nvmDir` | `""` | machine-overridable | macOS / Linux only. Path to `NVM_DIR`. Empty means auto-detect. |
+| `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
+| `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
 
-When auto-switch is on, opening a workspace silently switches to the pinned version. When it is
-off and **Ask when off** is on, a notification offers **Switch** and **Always for this project**.
+When auto-switch is on, opening a workspace silently switches to the pinned
+version. When it is off and **Ask when off** is on, a notification offers
+**Switch** and **Always for this project**.
 
 ## Commands
 
@@ -97,6 +115,18 @@ off and **Ask when off** is on, a notification offers **Switch** and **Always fo
 | `NVM: Pin Active Version to Project` | Write the active version to `.nvmrc` / `.node-version`. |
 | `NVM: Doctor (Diagnostics)` | Print an environment report to the output channel. |
 
+## Security
+
+- Runs `nvm` locally and reads project files (`.nvmrc`, `.node-version`,
+  `package.json`) from the open workspace; it has no server component and no
+  telemetry.
+- Values taken from project files are validated before they reach `nvm`: version
+  strings must match a strict allowlist, arguments passed to a shell are quoted,
+  and the package manager probe only runs known binaries.
+- In an **untrusted workspace** the extension shows information but never
+  auto-switches, installs or probes anything declared by project files.
+- `nvm install` / `nvm list available` reach the network through `nvm` itself.
+
 ## Support the project
 
 NVM Manager is free and open source. If it is useful to you:
@@ -106,4 +136,4 @@ NVM Manager is free and open source. If it is useful to you:
 
 ## License
 
-Released under the [MIT License](LICENSE).
+[MIT](LICENSE)

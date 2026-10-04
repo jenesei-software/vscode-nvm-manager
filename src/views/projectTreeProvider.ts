@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import type {
   PackageAvailability,
   ProjectInfoService,
-} from "../services/projectInfo";
+} from "../services/projectInfoService";
 import {
   NODE_SOURCE_LABEL,
   type NodeDeclaration,

@@ -11,9 +11,9 @@ import {
   setAutoSwitchWorkspace,
 } from "./config";
 import { createAdapter } from "./nvm";
-import { AutoSwitch } from "./services/autoSwitch";
-import { ProjectInfoService } from "./services/projectInfo";
-import { TerminalEnv } from "./services/terminalEnv";
+import { AutoSwitch } from "./services/autoSwitchService";
+import { ProjectInfoService } from "./services/projectInfoService";
+import { TerminalEnv } from "./services/terminalEnvService";
 import { VersionService } from "./services/versionService";
 import { StatusBar } from "./statusBar";
 import { ProjectTreeProvider } from "./views/projectTreeProvider";

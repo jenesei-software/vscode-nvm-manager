@@ -7,8 +7,8 @@ import {
   setAutoSwitchGlobal,
   setAutoSwitchWorkspace,
 } from "./config";
-import { buildDoctorReport } from "./services/doctor";
-import type { ProjectInfoService } from "./services/projectInfo";
+import { buildDoctorReport } from "./services/doctorService";
+import type { ProjectInfoService } from "./services/projectInfoService";
 import type { VersionService } from "./services/versionService";
 import { buildPinContent, choosePinFile } from "./util/pinFile";
 import { compareVersions } from "./util/version";

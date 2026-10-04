@@ -19,5 +19,6 @@
   "config.nvmPath": "Nur Windows. Absoluter Pfad zu `nvm.exe`. Leer lassen, um automatisch aus `NVM_HOME` oder `PATH` zu ermitteln.",
   "config.nvmDir": "Nur macOS / Linux. Pfad zum nvm-Verzeichnis (`NVM_DIR`). Leer lassen, um automatisch aus `NVM_DIR` oder `~/.nvm` zu ermitteln.",
   "config.autoSwitch": "Beim Öffnen eines Arbeitsbereichs die aktive Node.js-Version automatisch anhand von `.nvmrc` / `.node-version` / `package.json` `engines.node` wechseln. Global oder pro Arbeitsbereich festlegen.",
-  "config.askWhenAutoSwitchOff": "Vor dem Wechseln fragen, wenn der automatische Wechsel deaktiviert ist."
+  "config.askWhenAutoSwitchOff": "Vor dem Wechseln fragen, wenn der automatische Wechsel deaktiviert ist.",
+  "config.title": "NVM Manager"
 }

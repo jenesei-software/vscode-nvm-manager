@@ -17,13 +17,6 @@
     "vscode": "^1.85.0",
     "node": ">=22"
   },
-  "capabilities": {
-    "untrustedWorkspaces": {
-      "supported": "limited",
-      "description": "NVM Manager executes the nvm CLI and reads version files from the workspace. In untrusted workspaces it shows information but does not auto-switch, install or probe anything declared by project files."
-    },
-    "virtualWorkspaces": false
-  },
   "categories": [
     "Other"
   ],
@@ -36,6 +29,13 @@
   ],
   "icon": "resources/icon.png",
   "main": "./dist/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "NVM Manager executes the nvm CLI and reads version files from the workspace. In untrusted workspaces it shows information but does not auto-switch, install or probe anything declared by project files."
+    },
+    "virtualWorkspaces": false
+  },
   "l10n": "./l10n",
   "activationEvents": [
     "onStartupFinished",
@@ -230,7 +230,7 @@
       ]
     },
     "configuration": {
-      "title": "NVM Manager",
+      "title": "%config.title%",
       "properties": {
         "nvmManager.nvmPath": {
           "type": "string",
@@ -271,7 +271,7 @@
     "check:registry": "node scripts/check-registry.mjs",
     "check": "npm run lint && npm run typecheck && npm run check:registry",
     "l10n:extract": "npx @vscode/l10n-dev export --outDir ./l10n ./src",
-    "test": "tsc -p tsconfig.test.json && node --test \"out/test/*.test.js\"",
+    "test": "node -e \"require('node:fs').rmSync('out',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test \"out/test/*.test.js\"",
     "pretest:integration": "npm run build:prod && tsc -p tsconfig.test.json",
     "test:integration": "vscode-test",
     "vsix": "vsce package",
@@ -280,13 +280,13 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.20.4",
+    "@types/node": "^26.6.2",
     "@types/vscode": "^1.85.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.1.0",
-    "@vscode/vsce": "^3.2.1",
-    "esbuild": "^0.25.12",
-    "typescript": "^5.5.4"
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "diff": "^9.0.0",

@@ -7,7 +7,7 @@ export interface StatusBarProjectState {
   trusted: boolean;
 }
 
-export class StatusBar {
+export class StatusBar implements vscode.Disposable {
   private readonly item: vscode.StatusBarItem;
 
   constructor() {

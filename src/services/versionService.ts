@@ -3,7 +3,7 @@ import type { InstalledVersion, NvmAdapter, RemoteVersion } from "../nvm/types";
 import type { NodeDeclaration } from "../util/projectSignals";
 import { bestMatch, satisfies } from "../util/semver";
 import { isSafeVersion, resolveRequested } from "../util/version";
-import type { TerminalEnv } from "./terminalEnv";
+import type { TerminalEnv } from "./terminalEnvService";
 
 export class VersionService {
   private installed: InstalledVersion[] = [];
