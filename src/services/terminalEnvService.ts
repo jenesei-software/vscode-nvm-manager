@@ -1,16 +1,17 @@
-import * as path from "node:path";
 import type * as vscode from "vscode";
 
 const SELECTED_VERSION_KEY = "nvmManager.selectedVersion";
 
 interface SavedSelection {
   version: string;
-  dir: string;
+  binDir: string;
 }
 
 /**
- * On Unix nvm cannot change the running process, so the selected version is
- * injected into every integrated terminal through a PATH prepend.
+ * Node cannot be changed in the process that hosts the extension, so the
+ * selected version is injected into every integrated terminal through a PATH
+ * prepend. This works without administrator rights and leaves the system
+ * untouched.
  */
 export class TerminalEnv {
   private selected?: string;
@@ -24,19 +25,19 @@ export class TerminalEnv {
     return this.selected;
   }
 
-  select(version: string, dir: string): void {
+  select(version: string, binDir: string): void {
     this.selected = version;
-    this.apply(version, dir);
-    void this.memento.update(SELECTED_VERSION_KEY, { version, dir });
+    this.apply(version, binDir);
+    void this.memento.update(SELECTED_VERSION_KEY, { version, binDir });
   }
 
   async restore(): Promise<void> {
     const saved = this.memento.get<SavedSelection>(SELECTED_VERSION_KEY);
-    if (!saved) {
+    if (!saved?.binDir) {
       return;
     }
     this.selected = saved.version;
-    this.apply(saved.version, saved.dir);
+    this.apply(saved.version, saved.binDir);
   }
 
   clear(): void {
@@ -45,10 +46,12 @@ export class TerminalEnv {
     void this.memento.update(SELECTED_VERSION_KEY, undefined);
   }
 
-  private apply(version: string, dir: string): void {
-    const bin = path.posix.join(dir, "versions", "node", `v${version}`, "bin");
+  private apply(version: string, binDir: string): void {
     this.collection.clear();
-    this.collection.prepend("PATH", bin);
+    if (!binDir) {
+      return;
+    }
+    this.collection.prepend("PATH", binDir);
     this.collection.description = `NVM Manager: Node.js v${version}`;
   }
 }

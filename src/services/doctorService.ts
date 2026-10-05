@@ -26,8 +26,16 @@ export async function buildDoctorReport(
 
   lines.push(line("Platform", info.platform));
   lines.push(
-    line("nvm kind", info.managesTerminalEnv ? "nvm-sh" : "nvm-windows"),
+    line(
+      "backend",
+      info.kind === "node"
+        ? "node (nvm not found)"
+        : info.managesTerminalEnv
+          ? "nvm-sh"
+          : "nvm-windows",
+    ),
   );
+  lines.push(line("switch mode", info.switchMode));
   lines.push(line("nvm location", info.dir || "(unknown)"));
   lines.push(line("nvm exists", fs.existsSync(info.dir) ? "yes" : "no"));
 

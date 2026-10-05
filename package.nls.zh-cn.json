@@ -21,5 +21,7 @@
   "config.autoSwitch": "打开工作区时，根据 `.nvmrc` / `.node-version` / `package.json` 的 `engines.node` 自动切换活动的 Node.js 版本。可全局或按工作区设置。",
   "config.askWhenAutoSwitchOff": "自动切换关闭时，切换前先询问。",
   "config.registryAdvanced": "通过运行 `npm config get registry` 获取全局 npm 源（更准确，包含环境变量），而不仅读取 `~/.npmrc`。",
+  "config.switchMode": "应用版本切换的方式。`auto`：先尝试 `nvm use`，在需要管理员权限时回退到 VS Code 终端。`system`：始终使用 `nvm use`（全局符号链接）。`terminal`：仅在 VS Code 终端内切换——无需管理员权限。",
+  "config.nodeVersionsRoots": "当 nvm 不可用时，额外扫描 Node.js 安装的目录。每个目录可包含版本文件夹（`v22.16.0`、`node@22`），或其本身就是一个 Node.js 安装。",
   "config.title": "NVM Manager"
 }

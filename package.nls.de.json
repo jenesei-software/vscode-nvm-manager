@@ -21,5 +21,7 @@
   "config.autoSwitch": "Beim Öffnen eines Arbeitsbereichs die aktive Node.js-Version automatisch anhand von `.nvmrc` / `.node-version` / `package.json` `engines.node` wechseln. Global oder pro Arbeitsbereich festlegen.",
   "config.askWhenAutoSwitchOff": "Vor dem Wechseln fragen, wenn der automatische Wechsel deaktiviert ist.",
   "config.registryAdvanced": "Ermittelt die globale npm-Registry über `npm config get registry` (genauer, berücksichtigt Umgebungsvariablen) statt nur `~/.npmrc` zu lesen.",
+  "config.switchMode": "Wie das Umschalten angewendet wird. `auto`: `nvm use` versuchen und bei fehlenden Administratorrechten auf VS Code-Terminals zurückfallen. `system`: immer `nvm use` (globaler Symlink). `terminal`: nur in VS Code-Terminals umschalten — keine Administratorrechte nötig.",
+  "config.nodeVersionsRoots": "Zusätzliche Verzeichnisse, die ohne nvm nach Node.js-Installationen durchsucht werden. Jedes kann Versionsordner (`v22.16.0`, `node@22`) enthalten oder selbst eine Node.js-Installation sein.",
   "config.title": "NVM Manager"
 }

@@ -8,7 +8,11 @@ export const KEYS = {
   autoSwitch: "autoSwitch",
   askWhenAutoSwitchOff: "askWhenAutoSwitchOff",
   registryAdvanced: "registryAdvanced",
+  switchMode: "switchMode",
+  nodeVersionsRoots: "nodeVersionsRoots",
 } as const;
+
+export type SwitchMode = "auto" | "system" | "terminal";
 
 export function getConfig(): vscode.WorkspaceConfiguration {
   return vscode.workspace.getConfiguration(CONFIG_SECTION);
@@ -72,6 +76,30 @@ export function askWhenAutoSwitchOff(): boolean {
 
 export function registryAdvanced(): boolean {
   return getConfig().get<boolean>(KEYS.registryAdvanced, false);
+}
+
+export function switchMode(): SwitchMode {
+  const value = getConfig().get<string>(KEYS.switchMode, "auto");
+  return value === "system" || value === "terminal" ? value : "auto";
+}
+
+export async function setSwitchMode(value: SwitchMode): Promise<void> {
+  await getConfig().update(
+    KEYS.switchMode,
+    value,
+    vscode.ConfigurationTarget.Global,
+  );
+}
+
+export function nodeVersionsRoots(): string[] {
+  const value = getConfig().get<string[]>(KEYS.nodeVersionsRoots, []);
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter(
+    (entry): entry is string =>
+      typeof entry === "string" && entry.trim() !== "",
+  );
 }
 
 export function nvmPathSetting(): string {

@@ -21,5 +21,7 @@
   "config.autoSwitch": "Auto-switch the active Node.js version from `.nvmrc` / `.node-version` / `package.json` `engines.node` when a workspace is opened. Set globally or per workspace.",
   "config.askWhenAutoSwitchOff": "Ask before switching when auto-switch is disabled.",
   "config.registryAdvanced": "Resolve the global npm registry by running `npm config get registry` (accurate, includes environment variables) instead of only reading `~/.npmrc`.",
+  "config.switchMode": "How a version switch is applied. `auto`: try `nvm use` and fall back to VS Code terminals when it needs admin rights. `system`: always use `nvm use` (global symlink). `terminal`: only switch inside VS Code terminals — no admin rights needed.",
+  "config.nodeVersionsRoots": "Extra directories scanned for Node.js installations when nvm is not available. Each may contain version folders (`v22.16.0`, `node@22`) or be a Node.js installation itself.",
   "config.title": "NVM Manager"
 }

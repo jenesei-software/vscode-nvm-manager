@@ -37,6 +37,14 @@ environment on macOS/Linux.
   you can install from.
 - **Switch in one click** from the tree, the status bar, or the command palette
   (`NVM: Switch Node.js Version...`).
+- **Switch without admin rights**: when `nvm use` cannot repoint the global
+  symlink (nvm-windows without admin rights / Developer Mode), the version is
+  applied to VS Code's integrated terminals through `PATH` - no system change,
+  no elevation. The `nvmManager.switchMode` setting selects `auto`, `system` or
+  `terminal`.
+- **Works without nvm**: if nvm is not installed at all, the extension falls
+  back to discovering Node.js installations on disk and switching them in
+  integrated terminals. `nvmManager.nodeVersionsRoots` adds extra locations.
 - **Active version in the status bar** - click it to switch.
 - **Auto-switch per project**: reads `.nvmrc`, then `.node-version`, then
   `package.json` `engines.node`, resolves it against the installed list (`22`,
@@ -103,6 +111,8 @@ To pin a project version, add `.nvmrc` at the repository root:
 | `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
 | `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
 | `nvmManager.registryAdvanced` | `false` | window | Resolve the global npm registry with `npm config get registry` (includes environment variables) instead of only reading `~/.npmrc`. |
+| `nvmManager.switchMode` | `auto` | window | `auto` tries `nvm use` and falls back to VS Code terminals when admin rights are required; `system` always uses `nvm use`; `terminal` only switches inside VS Code terminals. |
+| `nvmManager.nodeVersionsRoots` | `[]` | machine-overridable | Extra directories scanned for Node.js installations when nvm is not available. |
 
 When auto-switch is on, opening a workspace silently switches to the pinned
 version. When it is off and **Ask when off** is on, a notification offers
@@ -130,6 +140,9 @@ version. When it is off and **Ask when off** is on, a notification offers
   and the package manager probe only runs known binaries.
 - In an **untrusted workspace** the extension shows information but never
   auto-switches, installs or probes anything declared by project files.
+- Terminal switching only prepends `PATH` for VS Code's integrated terminals: it
+  needs no administrator rights and never changes the system, the global
+  symlink or the user `PATH`.
 - `nvm install` / `nvm list available` reach the network through `nvm` itself.
 
 ## Support the project

@@ -3,6 +3,7 @@ import { registerCommands } from "./commands";
 import {
   askWhenAutoSwitchOff,
   hasWorkspace,
+  nodeVersionsRoots,
   nvmDirSetting,
   nvmPathSetting,
   readAutoSwitch,
@@ -37,7 +38,11 @@ export async function activate(
 
   let service: VersionService;
   try {
-    const adapter = await createAdapter(nvmPathSetting(), nvmDirSetting());
+    const adapter = await createAdapter(
+      nvmPathSetting(),
+      nvmDirSetting(),
+      nodeVersionsRoots(),
+    );
     service = new VersionService(adapter, terminalEnv);
   } catch (error) {
     const message = (error as Error).message;
@@ -46,6 +51,18 @@ export async function activate(
     return;
   }
   context.subscriptions.push(service);
+
+  const capabilities = service.capabilities();
+  void vscode.commands.executeCommand(
+    "setContext",
+    "nvmManager.canInstall",
+    capabilities.install,
+  );
+  void vscode.commands.executeCommand(
+    "setContext",
+    "nvmManager.canUninstall",
+    capabilities.uninstall,
+  );
 
   const statusBar = new StatusBar();
   context.subscriptions.push(statusBar);
@@ -174,7 +191,9 @@ export async function activate(
   }
 
   updateUi();
-  void service.refreshRemote();
+  if (service.capabilities().remote) {
+    void service.refreshRemote();
+  }
   void runAutoSwitch();
 }
 

@@ -176,7 +176,7 @@
         },
         {
           "command": "nvmManager.installDeclared",
-          "when": "view == nvmManager.project && viewItem == projectNoMatch",
+          "when": "view == nvmManager.project && viewItem == projectNoMatch && nvmManager.canInstall",
           "group": "inline@1"
         },
         {
@@ -191,7 +191,7 @@
         },
         {
           "command": "nvmManager.uninstall",
-          "when": "view == nvmManager.versions && viewItem == installed",
+          "when": "view == nvmManager.versions && viewItem == installed && nvmManager.canUninstall",
           "group": "1_manage@1"
         },
         {
@@ -201,12 +201,12 @@
         },
         {
           "command": "nvmManager.uninstall",
-          "when": "view == nvmManager.versions && viewItem == active",
+          "when": "view == nvmManager.versions && viewItem == active && nvmManager.canUninstall",
           "group": "1_manage@1"
         },
         {
           "command": "nvmManager.install",
-          "when": "view == nvmManager.versions && viewItem == remote",
+          "when": "view == nvmManager.versions && viewItem == remote && nvmManager.canInstall",
           "group": "inline@1"
         }
       ],
@@ -261,6 +261,26 @@
           "default": false,
           "scope": "window",
           "markdownDescription": "%config.registryAdvanced%"
+        },
+        "nvmManager.switchMode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "system",
+            "terminal"
+          ],
+          "default": "auto",
+          "scope": "window",
+          "markdownDescription": "%config.switchMode%"
+        },
+        "nvmManager.nodeVersionsRoots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "machine-overridable",
+          "markdownDescription": "%config.nodeVersionsRoots%"
         }
       }
     }

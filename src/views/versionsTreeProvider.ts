@@ -119,7 +119,11 @@ export class VersionsTreeProvider implements vscode.TreeDataProvider<TreeNode> {
 
   getChildren(element?: TreeNode): TreeNode[] {
     if (!element) {
-      return [{ kind: "installed" }, { kind: "remote" }];
+      const roots: TreeNode[] = [{ kind: "installed" }];
+      if (this.service.capabilities().remote) {
+        roots.push({ kind: "remote" });
+      }
+      return roots;
     }
     if (element.kind === "installed") {
       return this.service.getInstalled().map(

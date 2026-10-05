@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Switch Node.js inside VS Code terminals without administrator rights: when
+  `nvm use` cannot repoint the global symlink, the version is applied to the
+  integrated terminals through `PATH`. Setting `nvmManager.switchMode`
+  (`auto` / `system` / `terminal`) controls this.
+- Bare-Node fallback: when nvm is not installed, the extension discovers Node.js
+  installations on disk and switches them in integrated terminals. Setting
+  `nvmManager.nodeVersionsRoots` adds extra locations.
 - Project view: a **Registry** group showing the npm registry a project resolves
   packages from (`.npmrc`, `.yarnrc`, `.yarnrc.yml`, `bunfig.toml`), the global
   registry from `~/.npmrc`, scoped registries, and a marker when the project

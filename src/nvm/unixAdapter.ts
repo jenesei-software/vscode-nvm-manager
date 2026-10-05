@@ -1,6 +1,13 @@
+import * as path from "node:path";
 import { run } from "../util/exec";
 import { parseUnixInstalled, parseUnixRemote } from "../util/parse";
-import type { InstalledVersion, NvmAdapter, RemoteVersion } from "./types";
+import type {
+  AdapterCapabilities,
+  AdapterKind,
+  InstalledVersion,
+  NvmAdapter,
+  RemoteVersion,
+} from "./types";
 
 function shellQuote(value: string): string {
   return `'${value.replace(/'/g, "'\\''")}'`;
@@ -13,11 +20,21 @@ function shellQuote(value: string): string {
  * applied to the integrated terminal environment by the service layer.
  */
 export class NvmUnixAdapter implements NvmAdapter {
+  readonly kind: AdapterKind = "nvm";
+  readonly capabilities: AdapterCapabilities = {
+    install: true,
+    uninstall: true,
+    remote: true,
+  };
   readonly managesTerminalEnv = true;
   readonly dir: string;
 
   constructor(nvmDir: string) {
     this.dir = nvmDir;
+  }
+
+  binDir(version: string): string {
+    return path.posix.join(this.dir, "versions", "node", `v${version}`, "bin");
   }
 
   private execNvm(args: string, timeout = 60000) {

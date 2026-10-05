@@ -1,7 +1,14 @@
 import * as path from "node:path";
 import { run } from "../util/exec";
 import { compareVersions } from "../util/version";
-import type { InstalledVersion, NvmAdapter, RemoteVersion } from "./types";
+import {
+  type AdapterCapabilities,
+  type AdapterKind,
+  type InstalledVersion,
+  type NvmAdapter,
+  NvmPermissionError,
+  type RemoteVersion,
+} from "./types";
 
 const VERSION = /^\d+\.\d+\.\d+$/;
 const VERSION_AT_START = /^(\d+\.\d+\.\d+)/;
@@ -14,11 +21,21 @@ const REMOTE_LABELS: Record<number, string | false> = {
 };
 
 export class NvmWindowsAdapter implements NvmAdapter {
+  readonly kind: AdapterKind = "nvm";
+  readonly capabilities: AdapterCapabilities = {
+    install: true,
+    uninstall: true,
+    remote: true,
+  };
   readonly managesTerminalEnv = false;
   readonly dir: string;
 
   constructor(private readonly nvmPath: string) {
     this.dir = path.dirname(nvmPath);
+  }
+
+  binDir(version: string): string {
+    return path.join(this.dir, `v${version}`);
   }
 
   private exec(args: string[], timeout = 60000) {
@@ -73,7 +90,13 @@ export class NvmWindowsAdapter implements NvmAdapter {
   async use(version: string): Promise<void> {
     const { stdout, stderr, code } = await this.exec(["use", version], 120000);
     if (code !== 0) {
-      throw new Error((stderr || stdout).trim() || `nvm use ${version} failed`);
+      const message = (stderr || stdout).trim() || `nvm use ${version} failed`;
+      if (
+        /denied|privileges|admin|EPERM|symbolic link|symlink/i.test(message)
+      ) {
+        throw new NvmPermissionError(message);
+      }
+      throw new Error(message);
     }
   }
 

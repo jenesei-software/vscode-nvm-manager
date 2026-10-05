@@ -100,5 +100,11 @@
   "NVM Manager currently supports Windows (nvm-windows) only.": "NVM Manager は現在 Windows（nvm-windows）のみをサポートしています。",
   "nvm.exe not found. Install nvm-windows or set \"nvmManager.nvmPath\".": "nvm.exe が見つかりません。nvm-windows をインストールするか「nvmManager.nvmPath」を設定してください。",
   "nvm not found. Install nvm (nvm-sh) or set \"nvmManager.nvmDir\".": "nvm が見つかりません。nvm（nvm-sh）をインストールするか「nvmManager.nvmDir」を設定してください。",
-  "NVM Manager does not support the \"{0}\" platform yet.": "NVM Manager は「{0}」プラットフォームにまだ対応していません。"
+  "NVM Manager does not support the \"{0}\" platform yet.": "NVM Manager は「{0}」プラットフォームにまだ対応していません。",
+  "NVM Manager: could not locate Node.js v{0} on disk.": "NVM Manager: Node.js v{0} がディスク上に見つかりませんでした。",
+  "NVM Manager: nvm use needs admin rights here. Node.js was switched in VS Code terminals instead — open a new terminal to apply.": "NVM Manager: ここでは「nvm use」に管理者権限が必要です。代わりに VS Code のターミナルで Node.js を切り替えました — 新しいターミナルを開いて適用してください。",
+  "Always use terminals": "常にターミナルを使用",
+  "Installing Node.js requires nvm, which was not found.": "Node.js のインストールには nvm が必要ですが、見つかりませんでした。",
+  "Uninstalling Node.js requires nvm, which was not found.": "Node.js のアンインストールには nvm が必要ですが、見つかりませんでした。",
+  "Listing available versions requires nvm, which was not found.": "利用可能なバージョンの一覧表示には nvm が必要ですが、見つかりませんでした。"
 }

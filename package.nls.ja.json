@@ -21,5 +21,7 @@
   "config.autoSwitch": "ワークスペースを開いたときに、`.nvmrc` / `.node-version` / `package.json` の `engines.node` に従ってアクティブな Node.js バージョンを自動的に切り替えます。グローバルまたはワークスペース単位で設定できます。",
   "config.askWhenAutoSwitchOff": "自動切り替えが無効のとき、切り替える前に確認します。",
   "config.registryAdvanced": "`~/.npmrc` を読むだけでなく `npm config get registry` を実行してグローバル npm レジストリを取得します（環境変数を反映するためより正確）。",
+  "config.switchMode": "バージョン切り替えの適用方法。`auto`: `nvm use` を試し、管理者権限が必要な場合は VS Code のターミナルにフォールバックします。`system`: 常に `nvm use`（グローバルシンボリックリンク）。`terminal`: VS Code のターミナル内だけで切り替え（管理者権限不要）。",
+  "config.nodeVersionsRoots": "nvm が無い場合に Node.js のインストールを探す追加ディレクトリ。各ディレクトリはバージョンフォルダ（`v22.16.0`、`node@22`）を含むか、それ自体が Node.js のインストールである場合があります。",
   "config.title": "NVM Manager"
 }

@@ -100,5 +100,11 @@
   "NVM Manager currently supports Windows (nvm-windows) only.": "NVM Manager actualmente solo admite Windows (nvm-windows).",
   "nvm.exe not found. Install nvm-windows or set \"nvmManager.nvmPath\".": "nvm.exe no encontrado. Instale nvm-windows o configure «nvmManager.nvmPath».",
   "nvm not found. Install nvm (nvm-sh) or set \"nvmManager.nvmDir\".": "nvm no encontrado. Instale nvm (nvm-sh) o configure «nvmManager.nvmDir».",
-  "NVM Manager does not support the \"{0}\" platform yet.": "NVM Manager aún no admite la plataforma «{0}»."
+  "NVM Manager does not support the \"{0}\" platform yet.": "NVM Manager aún no admite la plataforma «{0}».",
+  "NVM Manager: could not locate Node.js v{0} on disk.": "NVM Manager: no se encontró Node.js v{0} en el disco.",
+  "NVM Manager: nvm use needs admin rights here. Node.js was switched in VS Code terminals instead — open a new terminal to apply.": "NVM Manager: «nvm use» necesita permisos de administrador aquí. Node.js se cambió en las terminales de VS Code — abre una terminal nueva para aplicarlo.",
+  "Always use terminals": "Usar siempre terminales",
+  "Installing Node.js requires nvm, which was not found.": "Instalar Node.js requiere nvm, que no se encontró.",
+  "Uninstalling Node.js requires nvm, which was not found.": "Desinstalar Node.js requiere nvm, que no se encontró.",
+  "Listing available versions requires nvm, which was not found.": "Listar las versiones disponibles requiere nvm, que no se encontró."
 }
