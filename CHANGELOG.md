@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Project view: a **Registry** group showing the npm registry a project resolves
+  packages from (`.npmrc`, `.yarnrc`, `.yarnrc.yml`, `bunfig.toml`), the global
+  registry from `~/.npmrc`, scoped registries, and a marker when the project
+  registry differs from the global one.
+- Setting `nvmManager.registryAdvanced` to resolve the global registry with
+  `npm config get registry` (includes environment variables).
+
+### Changed
+
+- A cleaner, monochrome activity bar icon.
+
 ## [1.3.2] - 2026-09-25
 
 ### Fixed

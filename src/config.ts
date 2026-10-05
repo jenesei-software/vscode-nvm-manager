@@ -7,6 +7,7 @@ export const KEYS = {
   nvmDir: "nvmDir",
   autoSwitch: "autoSwitch",
   askWhenAutoSwitchOff: "askWhenAutoSwitchOff",
+  registryAdvanced: "registryAdvanced",
 } as const;
 
 export function getConfig(): vscode.WorkspaceConfiguration {
@@ -67,6 +68,10 @@ export async function setAskWhenAutoSwitchOff(value: boolean): Promise<void> {
 
 export function askWhenAutoSwitchOff(): boolean {
   return getConfig().get<boolean>(KEYS.askWhenAutoSwitchOff, true);
+}
+
+export function registryAdvanced(): boolean {
+  return getConfig().get<boolean>(KEYS.registryAdvanced, false);
 }
 
 export function nvmPathSetting(): string {

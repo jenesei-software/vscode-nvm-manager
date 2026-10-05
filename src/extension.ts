@@ -147,6 +147,10 @@ export async function activate(
         "yarn.lock",
         "bun.lockb",
         "bun.lock",
+        ".npmrc",
+        ".yarnrc",
+        ".yarnrc.yml",
+        "bunfig.toml",
       ];
       if (projectFiles.includes(name)) {
         projectInfo.refresh();

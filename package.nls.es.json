@@ -20,5 +20,6 @@
   "config.nvmDir": "Solo macOS / Linux. Ruta al directorio de nvm (`NVM_DIR`). Déjela vacía para detectarla desde `NVM_DIR` o `~/.nvm`.",
   "config.autoSwitch": "Cambia automáticamente la versión activa de Node.js según `.nvmrc` / `.node-version` / `package.json` `engines.node` al abrir un espacio de trabajo. Configúrelo de forma global o por espacio de trabajo.",
   "config.askWhenAutoSwitchOff": "Preguntar antes de cambiar cuando el cambio automático está desactivado.",
+  "config.registryAdvanced": "Determina el registro global de npm ejecutando `npm config get registry` (más preciso, incluye variables de entorno) en lugar de leer solo `~/.npmrc`.",
   "config.title": "NVM Manager"
 }

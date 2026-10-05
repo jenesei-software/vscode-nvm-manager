@@ -20,5 +20,6 @@
   "config.nvmDir": "macOS / Linux のみ。nvm ディレクトリ（`NVM_DIR`）へのパス。空の場合は `NVM_DIR` または `~/.nvm` から自動検出します。",
   "config.autoSwitch": "ワークスペースを開いたときに、`.nvmrc` / `.node-version` / `package.json` の `engines.node` に従ってアクティブな Node.js バージョンを自動的に切り替えます。グローバルまたはワークスペース単位で設定できます。",
   "config.askWhenAutoSwitchOff": "自動切り替えが無効のとき、切り替える前に確認します。",
+  "config.registryAdvanced": "`~/.npmrc` を読むだけでなく `npm config get registry` を実行してグローバル npm レジストリを取得します（環境変数を反映するためより正確）。",
   "config.title": "NVM Manager"
 }

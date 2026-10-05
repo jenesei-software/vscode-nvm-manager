@@ -28,6 +28,10 @@ environment on macOS/Linux.
   matches the active version, and the package manager - declared
   (`packageManager` / `devEngines`), detected from lockfiles, actually in use,
   and whether it is available on `PATH`.
+- **Registry awareness**: the Project view shows which npm registry the project
+  resolves packages from - the project `.npmrc`, `.yarnrc` / `.yarnrc.yml` or
+  `bunfig.toml`, the global `~/.npmrc`, and scoped registries - and flags when
+  the project registry differs from the global one.
 - **Versions view** in the activity bar: installed versions with the active one
   marked, plus an **Available** list (`nvm list available` / `nvm ls-remote`)
   you can install from.
@@ -98,6 +102,7 @@ To pin a project version, add `.nvmrc` at the repository root:
 | `nvmManager.nvmDir` | `""` | machine-overridable | macOS / Linux only. Path to `NVM_DIR`. Empty means auto-detect. |
 | `nvmManager.autoSwitch` | `false` | resource | Auto-switch the active version from `.nvmrc` / `.node-version` / `package.json`. Set globally or per workspace. |
 | `nvmManager.askWhenAutoSwitchOff` | `true` | window | Ask before switching when auto-switch is disabled. |
+| `nvmManager.registryAdvanced` | `false` | window | Resolve the global npm registry with `npm config get registry` (includes environment variables) instead of only reading `~/.npmrc`. |
 
 When auto-switch is on, opening a workspace silently switches to the pinned
 version. When it is off and **Ask when off** is on, a notification offers

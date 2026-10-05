@@ -20,5 +20,6 @@
   "config.nvmDir": "仅限 macOS / Linux。nvm 目录（`NVM_DIR`）的路径。留空则从 `NVM_DIR` 或 `~/.nvm` 自动检测。",
   "config.autoSwitch": "打开工作区时，根据 `.nvmrc` / `.node-version` / `package.json` 的 `engines.node` 自动切换活动的 Node.js 版本。可全局或按工作区设置。",
   "config.askWhenAutoSwitchOff": "自动切换关闭时，切换前先询问。",
+  "config.registryAdvanced": "通过运行 `npm config get registry` 获取全局 npm 源（更准确，包含环境变量），而不仅读取 `~/.npmrc`。",
   "config.title": "NVM Manager"
 }

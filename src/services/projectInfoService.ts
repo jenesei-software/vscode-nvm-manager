@@ -1,6 +1,8 @@
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { registryAdvanced } from "../config";
 import { run } from "../util/exec";
 import {
   detectPackageManager,
@@ -12,6 +14,7 @@ import {
   type NodeDeclaration,
   type NodeSource,
 } from "../util/projectSignals";
+import { detectRegistry, type RegistryInfo } from "../util/registry";
 import { satisfies } from "../util/semver";
 import type { VersionService } from "./versionService";
 
@@ -38,8 +41,10 @@ export interface ProjectInfo {
     status: "no-folder" | "not-specified" | "resolved" | "no-match";
   };
   packageManager: PackageManagerDetection;
+  registry: RegistryInfo;
   availability?: PackageAvailability[];
   checkingAvailability: boolean;
+  loadingRegistry: boolean;
 }
 
 const NO_FOLDER: ProjectInfo = {
@@ -47,7 +52,9 @@ const NO_FOLDER: ProjectInfo = {
   trusted: true,
   node: { declarations: [], matches: false, status: "no-folder" },
   packageManager: { conflicts: [] },
+  registry: detectRegistry({ project: {}, global: {} }),
   checkingAvailability: false,
+  loadingRegistry: false,
 };
 
 function readFile(file: string): string | undefined {
@@ -82,6 +89,9 @@ export class ProjectInfoService {
   private info: ProjectInfo = NO_FOLDER;
   private availability?: PackageAvailability[];
   private checkingAvailability = false;
+  private registryGlobalCommand?: string;
+  private registryGlobalChecked = false;
+  private loadingRegistry = false;
 
   private readonly changeEmitter = new vscode.EventEmitter<void>();
   readonly onDidChange = this.changeEmitter.event;
@@ -93,6 +103,7 @@ export class ProjectInfoService {
       ...this.info,
       availability: this.availability,
       checkingAvailability: this.checkingAvailability,
+      loadingRegistry: this.loadingRegistry,
     };
   }
 
@@ -136,6 +147,28 @@ export class ProjectInfoService {
     const hasFile = (relative: string) =>
       fs.existsSync(path.join(root, relative));
 
+    const packageManager = detectPackageManager({ hasFile, packageJson });
+    const managerName =
+      packageManager.detected ??
+      (packageManager.declared &&
+      isKnownPackageManager(packageManager.declared.name)
+        ? packageManager.declared.name
+        : undefined);
+    const useAdvanced = registryAdvanced();
+    const registry = detectRegistry({
+      manager: managerName,
+      project: {
+        npmrc: readFile(path.join(root, ".npmrc")),
+        yarnrc: readFile(path.join(root, ".yarnrc")),
+        yarnrcYml: readFile(path.join(root, ".yarnrc.yml")),
+        bunfig: readFile(path.join(root, "bunfig.toml")),
+      },
+      global: {
+        npmrc: readFile(path.join(os.homedir(), ".npmrc")),
+        command: useAdvanced ? this.registryGlobalCommand : undefined,
+      },
+    });
+
     this.info = {
       hasFolder: true,
       trusted: vscode.workspace.isTrusted,
@@ -156,9 +189,15 @@ export class ProjectInfoService {
             ? "resolved"
             : "no-match",
       },
-      packageManager: detectPackageManager({ hasFile, packageJson }),
+      packageManager,
+      registry,
       checkingAvailability: this.checkingAvailability,
+      loadingRegistry: this.loadingRegistry,
     };
+
+    if (useAdvanced && vscode.workspace.isTrusted) {
+      void this.ensureRegistryGlobal();
+    }
 
     const candidates = this.candidates();
     if (
@@ -198,6 +237,34 @@ export class ProjectInfoService {
     } finally {
       this.checkingAvailability = false;
       this.changeEmitter.fire();
+    }
+  }
+
+  async ensureRegistryGlobal(): Promise<void> {
+    if (
+      !vscode.workspace.isTrusted ||
+      !registryAdvanced() ||
+      this.registryGlobalChecked ||
+      this.loadingRegistry
+    ) {
+      return;
+    }
+    this.loadingRegistry = true;
+    this.changeEmitter.fire();
+    try {
+      const result = await run("npm", ["config", "get", "registry"], 8000, {
+        shell: true,
+      });
+      if (result.code === 0) {
+        const value = result.stdout.trim().split(/\r?\n/)[0]?.trim();
+        if (value && value !== "undefined" && value !== "null") {
+          this.registryGlobalCommand = value;
+        }
+      }
+    } finally {
+      this.registryGlobalChecked = true;
+      this.loadingRegistry = false;
+      this.refresh();
     }
   }
 

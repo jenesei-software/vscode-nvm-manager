@@ -8,11 +8,18 @@ import {
   NODE_SOURCE_LABEL,
   type NodeDeclaration,
 } from "../util/projectSignals";
+import type { RegistryValue, ScopedRegistry } from "../util/registry";
 
 type ProjectNode =
   | { kind: "empty"; message: string }
   | { kind: "untrusted" }
-  | { kind: "group"; group: "node" | "packageManager" }
+  | { kind: "group"; group: "registry" | "node" | "packageManager" }
+  | {
+      kind: "registry-value";
+      role: "project" | "global" | "effective";
+      value: RegistryValue;
+    }
+  | { kind: "registry-scoped"; entry: ScopedRegistry }
   | { kind: "node-declared"; declaration: NodeDeclaration }
   | { kind: "node-resolved" }
   | { kind: "node-active" }
@@ -61,13 +68,46 @@ export class ProjectTreeProvider
         return item;
       }
       case "group": {
-        const isNode = element.group === "node";
+        const groups = {
+          registry: { label: vscode.l10n.t("Registry"), icon: "globe" },
+          node: { label: vscode.l10n.t("Node"), icon: "versions" },
+          packageManager: {
+            label: vscode.l10n.t("Package manager"),
+            icon: "package",
+          },
+        } as const;
+        const group = groups[element.group];
         const item = new vscode.TreeItem(
-          isNode ? vscode.l10n.t("Node") : vscode.l10n.t("Package manager"),
+          group.label,
           vscode.TreeItemCollapsibleState.Expanded,
         );
-        item.iconPath = new vscode.ThemeIcon(isNode ? "versions" : "package");
+        item.iconPath = new vscode.ThemeIcon(group.icon);
         item.contextValue = "group";
+        return item;
+      }
+      case "registry-value": {
+        const labels = {
+          project: vscode.l10n.t("Project registry"),
+          global: vscode.l10n.t("Global registry"),
+          effective: vscode.l10n.t("Registry"),
+        } as const;
+        const item = new vscode.TreeItem(
+          labels[element.role],
+          vscode.TreeItemCollapsibleState.None,
+        );
+        item.description = `${element.value.url} · ${element.value.source}`;
+        item.iconPath = new vscode.ThemeIcon("globe");
+        item.tooltip = `${element.value.url} — ${element.value.source}`;
+        return item;
+      }
+      case "registry-scoped": {
+        const item = new vscode.TreeItem(
+          element.entry.scope,
+          vscode.TreeItemCollapsibleState.None,
+        );
+        item.description = `${element.entry.url} · ${element.entry.source}`;
+        item.iconPath = new vscode.ThemeIcon("symbol-namespace");
+        item.tooltip = `${element.entry.scope} → ${element.entry.url} (${element.entry.source})`;
         return item;
       }
       case "node-declared": {
@@ -249,6 +289,7 @@ export class ProjectTreeProvider
         return [{ kind: "empty", message: vscode.l10n.t("No folder opened") }];
       }
       const roots: ProjectNode[] = [
+        { kind: "group", group: "registry" },
         { kind: "group", group: "node" },
         { kind: "group", group: "packageManager" },
       ];
@@ -260,6 +301,41 @@ export class ProjectTreeProvider
 
     if (element.kind !== "group") {
       return [];
+    }
+
+    if (element.group === "registry") {
+      const registry = info.registry;
+      const children: ProjectNode[] = [];
+      if (registry.project) {
+        children.push({
+          kind: "registry-value",
+          role: "project",
+          value: registry.project,
+        });
+        if (registry.global && registry.differs) {
+          children.push({
+            kind: "registry-value",
+            role: "global",
+            value: registry.global,
+          });
+        }
+      } else if (registry.global) {
+        children.push({
+          kind: "registry-value",
+          role: "global",
+          value: registry.global,
+        });
+      } else {
+        children.push({
+          kind: "registry-value",
+          role: "effective",
+          value: registry.effective,
+        });
+      }
+      for (const entry of registry.scoped) {
+        children.push({ kind: "registry-scoped", entry });
+      }
+      return children;
     }
 
     if (element.group === "node") {

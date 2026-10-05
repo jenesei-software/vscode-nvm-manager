@@ -255,6 +255,12 @@
           "default": true,
           "scope": "window",
           "markdownDescription": "%config.askWhenAutoSwitchOff%"
+        },
+        "nvmManager.registryAdvanced": {
+          "type": "boolean",
+          "default": false,
+          "scope": "window",
+          "markdownDescription": "%config.registryAdvanced%"
         }
       }
     }
