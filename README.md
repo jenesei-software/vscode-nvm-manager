@@ -1,7 +1,7 @@
 # NVM Manager
 
 [![Marketplace](https://img.shields.io/badge/Marketplace-NVM%20Manager-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=jenesei-software.nvm-manager)
-[![Version](https://img.shields.io/badge/version-1.3.4-2ea44f)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.4.0-2ea44f)](CHANGELOG.md)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-2ea44f)](package.json)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
