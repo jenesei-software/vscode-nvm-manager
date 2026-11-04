@@ -12,10 +12,6 @@ Works with **nvm-windows** on Windows and **nvm-sh** on macOS/Linux: switching
 repoints the global nvm symlink on Windows and updates the integrated terminal
 environment on macOS/Linux.
 
-## 🚀 ACTUAL VERSIONS
-
-- `1.4.1`
-
 ## Screenshots
 
 <table>
